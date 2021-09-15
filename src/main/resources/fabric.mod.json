@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "floral-diversity",
+	"version": "${mod_version}",
+	"name": "Floral Diversity",
+	"description": "Adds more flora diverisity to your world",
+	"authors": [
+		"ENDERZOMBI102"
+	],
+	"contact": {
+		"website": "https://github.com/ENDERZOMBI102/FloralDiversity",
+		"repo": "https://github.com/ENDERZOMBI102/FloralDiversity"
+	},
+	"license": "MIT",
+	"icon": "assets/floral-diversity/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			"com.enderzombi102.floraldiversity.FloralDiversityClient"
+		],
+		"main": [
+			"com.enderzombi102.floraldiversity.FloralDiversity"
+		]
+	},
+	"mixins": [
+		"floral-diversity.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.11.6",
+		"fabric": "*",
+		"cloth-config2": ">=${cc_version}",
+		"minecraft": "1.17.1"
+	}
+}
