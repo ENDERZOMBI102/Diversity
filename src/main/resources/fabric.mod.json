@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "floral-diversity",
+	"id": "floraldiversity",
 	"version": "${mod_version}",
 	"name": "Floral Diversity",
-	"description": "Adds more flora diverisity to your world",
+	"description": "Adds more flora diversity to your world",
 	"authors": [
 		"ENDERZOMBI102"
 	],
@@ -12,7 +12,7 @@
 		"repo": "https://github.com/ENDERZOMBI102/FloralDiversity"
 	},
 	"license": "MIT",
-	"icon": "assets/floral-diversity/icon.png",
+	"icon": "assets/floraldiversity/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"client": [
@@ -23,7 +23,7 @@
 		]
 	},
 	"mixins": [
-		"floral-diversity.mixins.json"
+		"floraldiversity.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.11.6",

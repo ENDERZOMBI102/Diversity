@@ -15,7 +15,8 @@ import static com.enderzombi102.floraldiversity.FloralDiversity.getID;
 public class ItemRegistry {
 
 	private static final HashMap<String, Item> ITEMS = new HashMap<>() {{
-		put( "crystal_ground", new BlockItem( BlockRegistry.get("crystal_ground"), new FabricItemSettings().group(FLORAL_TAB) ) );
+		put( "crystal_ground",  new BlockItem( BlockRegistry.get("crystal_ground"), settings() ) );
+		put( "cataplant",  new BlockItem( BlockRegistry.get("cataplant"), settings() ) );
 	}};
 
 	public static void register() {
@@ -34,6 +35,10 @@ public class ItemRegistry {
 
 	public static void registerClient() {
 
+	}
+
+	private static FabricItemSettings settings() {
+		return new FabricItemSettings().group( FLORAL_TAB );
 	}
 
 }

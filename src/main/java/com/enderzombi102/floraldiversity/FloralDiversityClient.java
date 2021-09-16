@@ -1,8 +1,6 @@
 package com.enderzombi102.floraldiversity;
 
-import com.enderzombi102.floraldiversity.registry.EventListeners;
-import com.enderzombi102.floraldiversity.registry.ItemRegistry;
-import com.enderzombi102.floraldiversity.registry.SoundRegistry;
+import com.enderzombi102.floraldiversity.registry.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,6 +11,8 @@ public class FloralDiversityClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ItemRegistry.registerClient();
 		SoundRegistry.registerClient();
+		BiomeRegistry.registerClient();
+		ColorRegistry.registerClient();
 		EventListeners.registerClient();
 	}
 }

@@ -1,6 +1,6 @@
 package com.enderzombi102.floraldiversity.config;
 
-import com.enderzombi102.emr.config.data.MainConfig;
+import com.enderzombi102.floraldiversity.config.data.MainConfig;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;

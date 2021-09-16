@@ -1,5 +1,6 @@
 package com.enderzombi102.floraldiversity.registry;
 
+import com.enderzombi102.floraldiversity.block.Cataplant;
 import com.enderzombi102.floraldiversity.block.CrystalGroundBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -14,6 +15,7 @@ public class BlockRegistry {
 
 	private static final HashMap<String, Block> BLOCKS = new HashMap<>() {{
 		put( "crystal_ground", new CrystalGroundBlock() );
+		put( "cataplant", new Cataplant() );
 	}};
 
 	public static void register() {

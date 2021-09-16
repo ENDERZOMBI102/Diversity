@@ -10,6 +10,6 @@ import me.shedaniel.autoconfig.serializer.PartitioningSerializer;
 public class MainConfig extends PartitioningSerializer.GlobalData {
 
 	@ConfigEntry.Gui.CollapsibleObject
-	@ConfigEntry.Category("rottingMechanic")
-	public RottingMechanic rottingMechanic = new RottingMechanic();
+	@ConfigEntry.Category("plants")
+	public Plants plants = new Plants();
 }
