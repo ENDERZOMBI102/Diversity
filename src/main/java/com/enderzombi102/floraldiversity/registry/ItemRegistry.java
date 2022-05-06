@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.enderzombi102.floraldiversity.FloralDiversity.FLORAL_TAB;
-import static com.enderzombi102.floraldiversity.FloralDiversity.getID;
+import static com.enderzombi102.floraldiversity.FloralDiversity.getId;
 
 public class ItemRegistry {
 
@@ -23,7 +23,7 @@ public class ItemRegistry {
 		for ( Map.Entry<String, Item> item : ITEMS.entrySet() ) {
 			Registry.register(
 					Registry.ITEM,
-					getID( item.getKey() ),
+					getId( item.getKey() ),
 					item.getValue()
 			);
 		}

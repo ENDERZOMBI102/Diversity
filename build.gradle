@@ -1,6 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.9-SNAPSHOT'
-	id 'maven-publish'
+	id 'org.quiltmc.loom' version '0.12-SNAPSHOT'
 }
 
 version = project.mod_version
@@ -8,80 +7,58 @@ group = project.maven_group
 
 repositories {
 	maven { url 'https://maven.shedaniel.me/' }
-	maven { url 'https://jitpack.io' }
 	maven { url 'https://maven.terraformersmc.com/' }
-	maven { url 'https://maven.gudenau.net' }
+	maven { url 'https://maven.quiltmc.org/repository/release' }
 }
 
 dependencies {
 	minecraft "com.mojang:minecraft:$minecraft_version"
-	mappings "net.fabricmc:yarn:$yarn_mappings:v2"
-	modImplementation "net.fabricmc:fabric-loader:$loader_version"
-
-	modImplementation "net.fabricmc.fabric-api:fabric-api:$fabric_version"
+	mappings(loom.layered {
+		addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:$minecraft_version+build.$quilt_mappings:v2"))
+	})
+	modImplementation "org.quiltmc:quilt-loader:$loader_version"
+	modImplementation "org.quiltmc:qsl:$qsl_version+$minecraft_version"
 
 	/* mod dependencies */
 
 	// cloth config
-	modApi("me.shedaniel.cloth:cloth-config-fabric:$clothconfig_version") {
-		exclude(group: 'net.fabricmc.fabric-api')
+	modImplementation("me.shedaniel.cloth:cloth-config-fabric:$clothconfig_version") {
+		exclude group: 'net.fabricmc.fabric-api'
 	}
 	// modmenu
 	modImplementation "com.terraformersmc:modmenu:$modmenu_version"
-
-	// more tags
-	include modImplementation("net.gudenau.minecraft:MoreTags:$moretags_version")
 
 	/* lib dependencies */
 }
 
 processResources {
-	inputs.property "mod_version", project.version
+	inputs.property 'mod_version', project.version
 	inputs.property 'cc_version', project.clothconfig_version
 	filteringCharset "UTF-8"
 
-	filesMatching("fabric.mod.json") {
+	filesMatching('quilt.mod.json') {
 		expand([
-				"mod_version": project.version,
-				'cc_version': project.clothconfig_version,
+			'mod_version': project.version,
+			'cc_version': project.clothconfig_version,
 		])
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = "UTF-8"
-	it.options.release.set(16)
+	it.options.encoding = 'UTF-8'
+	it.options.release.set(17)
 }
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(16)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 	archivesBaseName = project.archives_base_name
 	withSourcesJar()
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}" }
-	}
-}
-
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
-	}
-
-	repositories {
-
+	from('LICENSE') {
+		rename { "${it}_$archivesBaseName" }
 	}
 }
