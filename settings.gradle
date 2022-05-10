@@ -8,4 +8,6 @@ pluginManagement {
 		mavenCentral()
 	}
 }
-rootProject.name = 'Diversity-Flora'
+rootProject.name = 'Diversity'
+include 'Flora'
+

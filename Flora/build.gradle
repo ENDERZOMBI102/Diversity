@@ -1,5 +1,5 @@
 plugins {
-	id 'org.quiltmc.loom' version '0.12-SNAPSHOT'
+	id 'org.quiltmc.loom'
 }
 
 version = project.mod_version
@@ -21,6 +21,9 @@ dependencies {
 	modImplementation "org.quiltmc:quilt-loader:$loader_version"
 	modImplementation "org.quiltmc:qsl:$qsl_version+$minecraft_version"
 	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:$quilted_fapi_version-$minecraft_version"
+	implementation include( rootProject ) {
+		transitive false
+	}
 
 	/* mod dependencies */
 

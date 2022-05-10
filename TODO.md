@@ -1,0 +1,14 @@
+- [ ] Move config "library" to core
+- [ ] Create "Fauna" module
+- [ ] Create "Mineralogy" module
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 
+- [ ] 

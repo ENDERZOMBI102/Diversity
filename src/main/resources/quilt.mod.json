@@ -1,0 +1,49 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "${maven_group}",
+		"id": "diversity-core",
+		"version": "${version}",
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"metadata": {
+			"name": "Diversity: Core",
+			"description": "Diversity is a mod all about the nature ecosystem.",
+			"contributors": {
+				"ENDERZOMBI102": "Owner"
+			},
+			"contact": {
+				"sources": "https://github.com/ENDERZOMBI102/FloralDiversity",
+				"issues": "https://github.com/ENDERZOMBI102/FloralDiversity/issues"
+			},
+			"license": "MIT",
+			"icon": "assets/diversity/flora.png"
+		},
+		"depends": [
+			{
+				"id": "quilt_loader",
+				"versions": "${loader_version}"
+			},
+			{
+				"id": "quilt_base",
+				"versions": "*"
+			},
+			{
+				"id": "minecraft",
+				"versions": ">=${minecraft_version}"
+			},
+			{
+				"id": "java",
+				"versions": ">=17"
+			},
+			{
+				"id": "cloth-config2",
+				"versions": ">=${cc_version}"
+			}
+		],
+		"entrypoints": { }
+	},
+	"minecraft": {
+		"environment": "*"
+	},
+	"mixin": "diversity-core.mixins.json"
+}
