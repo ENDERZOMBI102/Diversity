@@ -11,5 +11,6 @@ public class DiversityFloraClient implements ClientModInitializer {
 		BiomeRegistry.registerClient();
 //		ColorRegistry.registerClient();
 		EventListeners.registerClient();
+		DiversityFlora.DATA.registerCreatorsClient();
 	}
 }

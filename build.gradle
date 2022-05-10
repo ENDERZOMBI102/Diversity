@@ -7,7 +7,9 @@ group = project.maven_group
 archivesBaseName = archives_base_name
 
 repositories {
+	maven { url 'https://jitpack.io' }
 	maven { url 'https://maven.shedaniel.me' }
+	maven { url 'https://maven.ryanliptak.com' }
 	maven { url 'https://maven.terraformersmc.com/releases' }
 	maven { url 'https://maven.quiltmc.org/repository/release' }
 	maven { url 'https://maven.quiltmc.org/repository/snapshot' }
@@ -32,6 +34,7 @@ dependencies {
 	modImplementation( "com.terraformersmc:modmenu:$modmenu_version" ) {
 		transitive false
 	}
+	modApi "com.github.DawnTeamMC:DawnAPI:v$dawn_version"
 
 	/* lib dependencies */
 }
