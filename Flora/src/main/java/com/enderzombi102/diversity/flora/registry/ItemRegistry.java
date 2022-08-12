@@ -9,7 +9,7 @@ import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.enderzombi102.diversity.flora.DiversityFlora.FLORAL_TAB;
+import static com.enderzombi102.diversity.flora.Flora.FLORAL_TAB;
 import static com.enderzombi102.diversity.flora.util.Const.getId;
 
 public final class ItemRegistry {

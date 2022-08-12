@@ -12,7 +12,7 @@ import org.quiltmc.qsl.item.group.api.QuiltItemGroup;
 
 import static com.enderzombi102.diversity.flora.util.Const.getId;
 
-public class DiversityFlora implements ModInitializer {
+public class Flora implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("Diversity | Flora");
 	public static final ModData DATA = new ModData( "diversity_flora" );
 	public static final ItemGroup FLORAL_TAB = QuiltItemGroup.createWithIcon(

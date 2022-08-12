@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 
-public class DiversityCore implements ModInitializer {
+public class Core implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("Diversity | Core");
 
 	@Override

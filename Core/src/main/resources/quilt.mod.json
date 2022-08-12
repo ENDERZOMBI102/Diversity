@@ -2,12 +2,12 @@
 	"schema_version": 1,
 	"quilt_loader": {
 		"group": "${group}",
-		"id": "diversity_flora",
+		"id": "diversity-core",
 		"version": "${version}",
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"metadata": {
-			"name": "Diversity: Flora",
-			"description": "Diversity module that adds more flora to your world",
+			"name": "Diversity: Core",
+			"description": "Core module for Diversity.",
 			"contributors": {
 				"ENDERZOMBI102": "Owner"
 			},
@@ -16,7 +16,7 @@
 				"issues": "https://github.com/ENDERZOMBI102/Diversity/issues"
 			},
 			"license": "MIT",
-			"icon": "assets/diversity/flora.png"
+			"icon": "assets/diversity-core/icon.png"
 		},
 		"depends": [
 			{
@@ -42,17 +42,14 @@
 		],
 		"entrypoints": {
 			"init": [
-				"com.enderzombi102.diversity.flora.Flora"
-			],
-			"client_init": [
-				"com.enderzombi102.diversity.flora.FloraClient"
+				"com.enderzombi102.diversity.core.Core"
 			]
 		}
 	},
 	"minecraft": {
 		"environment": "*"
 	},
-	"mixin": "diversity_flora.mixins.json",
+	"mixin": "diversity-core.mixins.json",
 	"modmenu": {
 		"parent": {
 			"id": "diversity",
