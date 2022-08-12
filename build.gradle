@@ -15,6 +15,7 @@ allprojects {
 		maven { url 'https://maven.quiltmc.org/repository/snapshot' }
 	}
 }
+
 subprojects {
 	apply plugin: 'org.quiltmc.loom'
 
@@ -96,13 +97,6 @@ subprojects {
 			rename { "${it}_$archivesBaseName" }
 		}
 	}
-
-	project.afterEvaluate {
-		tasks.prepareRemapJar {
-			dependsOn -= rootProject.tasks.jar
-			dependsOn tasks.jar
-		}
-	}
 }
 
 dependencies {
@@ -113,7 +107,8 @@ dependencies {
 }
 
 dependencies {
-	implementation include( project( ':Core' ) )
+	include implementation( project( ':Core' ) )
+	include implementation( project( ':Flora' ) )
 }
 
 processResources {

@@ -17,21 +17,21 @@ public abstract class PlantBlock extends net.minecraft.block.PlantBlock {
 		this( settings -> settings );
 	}
 
-	public PlantBlock( Function<QuiltBlockSettings, QuiltBlockSettings> settingsChanger ) {
+	public PlantBlock( Function<QuiltBlockSettings, Settings> settingsChanger ) {
 		super(
 			settingsChanger.apply(
-				QuiltBlockSettings.of(Material.PLANT)
-					.sounds(BlockSoundGroup.GRASS)
+				QuiltBlockSettings.of( Material.PLANT )
+					.sounds( BlockSoundGroup.GRASS )
 					.breakInstantly()
-					.collidable(false)
+					.collidable( false )
 			)
 		);
 	}
 
 	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+	public List<ItemStack> getDroppedStacks( BlockState state, LootContext.Builder builder ) {
 		List<ItemStack> drops = new ArrayList<>();
-		addDrops(drops, state);
+		addDrops( drops, state );
 		return drops;
 	}
 
@@ -40,5 +40,5 @@ public abstract class PlantBlock extends net.minecraft.block.PlantBlock {
 	/**
 	 * Add drops to this block
 	 */
-	protected abstract void addDrops(List<ItemStack> drops, BlockState state);
+	protected abstract void addDrops( List<ItemStack> drops, BlockState state );
 }

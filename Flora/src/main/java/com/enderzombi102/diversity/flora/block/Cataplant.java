@@ -28,6 +28,7 @@ public class Cataplant extends PlantBlock {
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
 	public Cataplant() {
+		super( settings -> settings.offsetType( OffsetType.XZ ) );
 		setDefaultState( stateManager.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH) );
 	}
 
@@ -49,11 +50,6 @@ public class Cataplant extends PlantBlock {
 	@Override
 	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
 		return SHAPE;
-	}
-
-	@Override
-	public OffsetType getOffsetType() {
-		return OffsetType.XZ;
 	}
 
 	@Nullable
