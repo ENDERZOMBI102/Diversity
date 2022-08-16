@@ -10,7 +10,7 @@ public class Core implements ModInitializer {
 
 	@Override
 	public void onInitialize(ModContainer mod) {
-		LOGGER.info("Let's get diverse!");
-		LOGGER.info("Diversity Core v{}", mod.metadata().version());
+		LOGGER.info( "Let's get diverse!" );
+		LOGGER.info( "Diversity Core v{}", mod.metadata().version().raw() );
 	}
 }

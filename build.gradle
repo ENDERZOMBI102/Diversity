@@ -14,8 +14,6 @@ allprojects {
 		maven { url 'https://maven.quiltmc.org/repository/release' }
 		maven { url 'https://maven.quiltmc.org/repository/snapshot' }
 	}
-
-	println( properties.group )
 }
 
 subprojects {
@@ -56,16 +54,14 @@ subprojects {
 
 		implementation "org.jetbrains:annotations:$annotations_version"
 
-//		if ( project.name != 'Core' ) {
-//			compileOnly( project( path: ':Core' ) ) {
-//				transitive = false
-//			}
-//		}
+		if ( project.name != 'Core' ) {
+			compileOnly( project( path: ':Core', configuration: 'namedElements' ) )
+		}
 	}
 
 	processResources {
 		inputs.property 'version', version
-		inputs.property 'group', group
+		inputs.property 'group', 'com.enderzombi102.diversity'
 		inputs.property 'loader_version', loader_version
 		inputs.property 'minecraft_version', minecraft_version
 		inputs.property 'cc_version', clothconfig_version
@@ -74,7 +70,7 @@ subprojects {
 		filesMatching('quilt.mod.json') {
 			expand([
 				'version': version,
-				'group': group,
+				'group': 'com.enderzombi102.diversity',
 				'loader_version': loader_version,
 				'minecraft_version': minecraft_version,
 				'cc_version': clothconfig_version,
@@ -107,16 +103,21 @@ dependencies {
 		addLayer quiltMappings.mappings( "org.quiltmc:quilt-mappings:$minecraft_version+build.$quilt_mappings:v2" )
 	} )
 	modImplementation "org.quiltmc:quilt-loader:$loader_version"
+	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:$quilted_fapi_version-$minecraft_version"
 
-	modImplementation include( project( ':Core' ) )
-	modImplementation include( project( ':Flora' ) )
+//	modImplementation( "com.terraformersmc:modmenu:$modmenu_version" ) {
+//		transitive false
+//	}
+
+	implementation include( project( path: ':Core', configuration: 'namedElements' ) )
+	implementation include( project( path: ':Flora', configuration: 'namedElements' ) )
 }
-
 processResources {
 	inputs.property 'version', version
+	inputs.property 'group', 'com.enderzombi102'
 	filteringCharset 'UTF-8'
 
 	filesMatching('quilt.mod.json') {
-		expand version: version
+		expand version: version, group: 'com.enderzombi102'
 	}
 }

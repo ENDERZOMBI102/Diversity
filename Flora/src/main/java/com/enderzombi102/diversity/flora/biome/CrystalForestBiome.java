@@ -8,6 +8,7 @@ import net.minecraft.util.HolderSet;
 import net.minecraft.util.math.intprovider.ClampedIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
@@ -64,20 +65,28 @@ public class CrystalForestBiome {
 
 
 	public static Biome make() {
-		var generation = new GenerationSettings.Builder();
-		generation.feature( Feature.VEGETAL_DECORATION, CRYSTAL_SHARD );
-		var spawn = new SpawnSettings.Builder();
-		spawn.spawn( SpawnGroup.MONSTER, new SpawnEntry( EntityType.SKELETON, 10, 1, 2 ) );
-		spawn.spawn( SpawnGroup.MONSTER, new SpawnEntry( EntityType.CREEPER, 3, 1, 1 ) );
-		spawn.spawn( SpawnGroup.MONSTER, new SpawnEntry( EntityType.SPIDER, 7, 1, 2 ) );
-		spawn.spawn( SpawnGroup.CREATURE, new SpawnEntry( EntityType.RABBIT, 5, 2, 5 ) );
-		spawn.spawn( SpawnGroup.MONSTER, new SpawnEntry( EntityType.SILVERFISH, 1, 1, 1 ) );
+		var generation = new GenerationSettings.Builder()
+			.feature( Feature.VEGETAL_DECORATION, CRYSTAL_SHARD );
+		var spawn = new SpawnSettings.Builder()
+			.spawn( SpawnGroup.MONSTER, new SpawnEntry( EntityType.SKELETON, 10, 1, 2 ) )
+			.spawn( SpawnGroup.MONSTER, new SpawnEntry( EntityType.CREEPER, 3, 1, 1 ) )
+			.spawn( SpawnGroup.MONSTER, new SpawnEntry( EntityType.SPIDER, 7, 1, 2 ) )
+			.spawn( SpawnGroup.CREATURE, new SpawnEntry( EntityType.RABBIT, 5, 2, 5 ) )
+			.spawn( SpawnGroup.MONSTER, new SpawnEntry( EntityType.SILVERFISH, 1, 1, 1 ) );
+		var effects = new BiomeEffects.Builder()
+			.fogColor( 0x000000 )
+			.waterColor( 0x000000 )
+			.waterFogColor( 0x000000 )
+			.skyColor( 0x0000FF );
+
 		return new Biome.Builder()
 			.precipitation( Biome.Precipitation.RAIN )
-			.temperatureModifier( Biome.TemperatureModifier.NONE )
 			.temperature( 0.8F )
+			.temperatureModifier( Biome.TemperatureModifier.NONE )
 			.downfall( 0.2F )
 			.spawnSettings( spawn.build() )
-			.generationSettings( generation.build() ).build();
+			.generationSettings( generation.build() )
+			.effects( effects.build() )
+			.build();
 	}
 }

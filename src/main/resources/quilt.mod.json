@@ -1,7 +1,7 @@
 {
 	"schema_version": 1,
 	"quilt_loader": {
-		"group": "com.enderzombi102",
+		"group": "${group}",
 		"id": "diversity",
 		"version": "${version}",
 		"intermediate_mappings": "net.fabricmc:intermediary",
