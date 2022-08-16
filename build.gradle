@@ -106,6 +106,7 @@ dependencies {
 	mappings( loom.layered {
 		addLayer quiltMappings.mappings( "org.quiltmc:quilt-mappings:$minecraft_version+build.$quilt_mappings:v2" )
 	} )
+	modImplementation "org.quiltmc:quilt-loader:$loader_version"
 
 	modImplementation include( project( ':Core' ) )
 	modImplementation include( project( ':Flora' ) )
