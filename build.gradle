@@ -14,6 +14,8 @@ allprojects {
 		maven { url 'https://maven.quiltmc.org/repository/release' }
 		maven { url 'https://maven.quiltmc.org/repository/snapshot' }
 	}
+
+	println( properties.group )
 }
 
 subprojects {
@@ -105,19 +107,15 @@ dependencies {
 		addLayer quiltMappings.mappings( "org.quiltmc:quilt-mappings:$minecraft_version+build.$quilt_mappings:v2" )
 	} )
 
-	include implementation( project( ':Core' ) )
-	include implementation( project( ':Flora' ) )
+	modImplementation include( project( ':Core' ) )
+	modImplementation include( project( ':Flora' ) )
 }
 
 processResources {
 	inputs.property 'version', version
-	inputs.property 'group', group
 	filteringCharset 'UTF-8'
 
 	filesMatching('quilt.mod.json') {
-		expand([
-			'version': version,
-			'group': group
-		])
+		expand version: version
 	}
 }
