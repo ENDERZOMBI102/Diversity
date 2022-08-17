@@ -2,8 +2,8 @@
 	"ambientocclusion": false,
 	"credit": "Made with Blockbench By ENDERZOMBI102",
 	"textures": {
-		"atlas": "diversity_flora:blocks/cataplant/atlas",
-		"particle": "diversity_flora:blocks/cataplant/particle"
+		"atlas": "diversity-flora:blocks/cataplant/atlas",
+		"particle": "diversity-flora:blocks/cataplant/particle"
 	},
 	"elements": [
 		{

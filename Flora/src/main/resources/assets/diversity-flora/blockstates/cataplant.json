@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=north": { "model": "diversity-flora:block/cataplant" },
+		"facing=east":  { "model": "diversity-flora:block/cataplant", "y":  90 },
+		"facing=south": { "model": "diversity-flora:block/cataplant", "y": 180 },
+		"facing=west":  { "model": "diversity-flora:block/cataplant", "y": 270 }
+	}
+}

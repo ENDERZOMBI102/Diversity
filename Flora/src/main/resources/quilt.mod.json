@@ -2,7 +2,7 @@
 	"schema_version": 1,
 	"quilt_loader": {
 		"group": "${group}",
-		"id": "diversity_flora",
+		"id": "diversity-flora",
 		"version": "${version}",
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"metadata": {
@@ -16,7 +16,7 @@
 				"issues": "https://github.com/ENDERZOMBI102/Diversity/issues"
 			},
 			"license": "MIT",
-			"icon": "assets/diversity/flora.png"
+			"icon": "assets/diversity-flora/flora.png"
 		},
 		"depends": [
 			{
@@ -52,7 +52,7 @@
 	"minecraft": {
 		"environment": "*"
 	},
-	"mixin": "diversity_flora.mixins.json",
+	"mixin": "diversity-flora.mixins.json",
 	"modmenu": {
 		"parent": {
 			"id": "diversity",

@@ -6,7 +6,7 @@ import org.quiltmc.loader.api.QuiltLoader;
 public final class Const {
 	private Const() {}
 
-	public static final String ID = "diversity_flora";
+	public static final String ID = "diversity-flora";
 	public static final String NAME;
 	public static final String VERSION;
 	public static final Identifier CONFIG_SYNC_ID;

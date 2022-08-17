@@ -4,6 +4,7 @@
 	"package": "com.enderzombi102.diversity.flora.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"BuiltinBiomesMixin",
 		"config.PlayerManagerMixin"
 	],
 	"client": [
