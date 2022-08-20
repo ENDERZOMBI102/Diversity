@@ -25,7 +25,7 @@ import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 public class CrystalForestBiome {
 
 	public static final Holder<ConfiguredFeature<SimpleRandomFeatureConfig, ?>> CRYSTAL_SHARDS_CONFIG = ConfiguredFeatureUtil.register(
-		"crystal_shard",
+		"diversity-flora:crystal_shard",
 		net.minecraft.world.gen.feature.Feature.SIMPLE_RANDOM_SELECTOR,
 		new SimpleRandomFeatureConfig(
 			HolderSet.createDirect(
@@ -47,7 +47,7 @@ public class CrystalForestBiome {
 		)
 	);
 	public static final Holder<PlacedFeature> CRYSTAL_SHARD = PlacedFeatureUtil.register(
-		"crystal_shard",
+		"diversity-flora:crystal_shard",
 		CRYSTAL_SHARDS_CONFIG,
 
 		RarityFilterPlacementModifier.create( 60 ),

@@ -11,21 +11,11 @@
 	},
 	"category": "forest",
 	"features": [
+		[ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ], [ ],
 		[
-			{
-				""
-			}
+			"diversity-flora:crystal_shard"
 		],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[]
+		[ ]
 	],
 	"spawners": {
 		"monster": [
@@ -62,5 +52,7 @@
 				"maxCount": 5
 			}
 		]
-	}
+	},
+	"spawn_costs": { },
+	"carvers": { }
 }

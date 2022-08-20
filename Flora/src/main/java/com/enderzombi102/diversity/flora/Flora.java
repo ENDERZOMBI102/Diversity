@@ -14,7 +14,6 @@ import static com.enderzombi102.diversity.flora.util.Const.getId;
 
 public class Flora implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("Diversity | Flora");
-	public static final ModData DATA = new ModData( "diversity-flora" );
 	public static final ItemGroup FLORAL_TAB = QuiltItemGroup.createWithIcon(
 		getId("floraltab"),
 		() -> new ItemStack( ItemRegistry.get("cataplant") )
@@ -28,7 +27,6 @@ public class Flora implements ModInitializer {
 		ItemRegistry.register();
 		BiomeRegistry.register();
 		EventListeners.register();
-		DATA.registerCreators();
 		LOGGER.info("Diversity module `Flora` loaded!");
 	}
 }
