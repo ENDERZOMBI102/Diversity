@@ -1,11 +1,15 @@
 package com.enderzombi102.endconfig.impl;
 
 import blue.endless.jankson.JsonObject;
-import com.enderzombi102.endconfig.ConfigHolder;
-import com.enderzombi102.endconfig.Data;
+import com.enderzombi102.endconfig.api.ConfigHolder;
+import com.enderzombi102.endconfig.api.Data;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.ActionResult;
+import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import java.nio.file.Path;
+import java.util.Objects;
 
 import static com.enderzombi102.enderlib.SafeUtils.doSafely;
 
@@ -37,8 +41,8 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 	}
 
 	@Override
-	public Screen screen() {
-		return new ConfigScreen( this );
+	public Screen screen( Screen parent ) {
+		return new ConfigScreen( this, parent );
 	}
 
 	@Override

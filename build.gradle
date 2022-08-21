@@ -17,6 +17,9 @@ allprojects {
 	}
 }
 
+def miDependencies = new ArrayList<Dependency>()
+def iDependencies = new ArrayList<Dependency>()
+
 subprojects {
 	apply plugin: 'org.quiltmc.loom'
 
@@ -31,11 +34,10 @@ subprojects {
 
 	dependencies {
 		minecraft "com.mojang:minecraft:$minecraft_version"
-		mappings(loom.layered {
-			addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:$minecraft_version+build.$quilt_mappings:v2"))
-		})
+		mappings( loom.layered {
+			addLayer( quiltMappings.mappings( "org.quiltmc:quilt-mappings:$minecraft_version+build.$quilt_mappings:v2" ) )
+		} )
 		modImplementation "org.quiltmc:quilt-loader:$loader_version"
-		modImplementation "org.quiltmc:qsl:$qsl_version+$minecraft_version"
 		modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:$quilted_fapi_version-$minecraft_version"
 
 		/* mod dependencies */
@@ -45,7 +47,9 @@ subprojects {
 			transitive false
 		}
 
-		modApi "com.github.DawnTeamMC:DawnAPI:v$dawn_version"
+		modCompileOnlyApi( "com.terraformersmc:modmenu:$modmenu_version" ) {
+			transitive false
+		}
 
 		/* lib dependencies */
 		implementation "com.enderzombi102:EnderLib:$enderlib_version"
@@ -65,32 +69,34 @@ subprojects {
 		inputs.property 'cc_version', clothconfig_version
 		filteringCharset 'UTF-8'
 
-		filesMatching('quilt.mod.json') {
-			expand([
-				'version': version,
-				'group': 'com.enderzombi102.diversity',
-				'loader_version': loader_version,
+		filesMatching( 'quilt.mod.json' ) {
+			expand( [
+				'version'          : version,
+				'group'            : 'com.enderzombi102.diversity',
+				'loader_version'   : loader_version,
 				'minecraft_version': minecraft_version,
-				'cc_version': clothconfig_version,
-			])
+				'cc_version'       : clothconfig_version,
+			] )
 		}
 	}
 
-	tasks.withType(JavaCompile).configureEach {
+	tasks.withType( JavaCompile ).configureEach {
 		it.options.encoding = 'UTF-8'
-		it.options.release.set(17)
+		it.options.release.set( 17 )
 	}
 
 	java {
 		toolchain {
-			languageVersion = JavaLanguageVersion.of(17)
+			languageVersion = JavaLanguageVersion.of( 17 )
 		}
 		withSourcesJar()
 	}
 
 	jar {
-		from('LICENSE') {
-			rename { "${it}_$archivesBaseName" }
+		from( 'LICENSE' ) {
+			rename {
+				"${it}_$archivesBaseName"
+			}
 		}
 	}
 }
@@ -109,7 +115,17 @@ dependencies {
 
 	implementation include( project( path: ':Core', configuration: 'namedElements' ) )
 	implementation include( project( path: ':Flora', configuration: 'namedElements' ) )
+
+	// FROM CORE
+	implementation include( 'blue.endless:jankson:1.2.1' )
+	modImplementation include( "dev.lambdaurora:spruceui:$spruceui_version" )
+	modImplementation( "me.shedaniel.cloth:cloth-config-fabric:$clothconfig_version" ) {
+		transitive false
+	}
+	implementation "com.enderzombi102:EnderLib:$enderlib_version"
+	implementation "org.jetbrains:annotations:$annotations_version"
 }
+
 processResources {
 	inputs.property 'version', version
 	inputs.property 'group', 'com.enderzombi102'

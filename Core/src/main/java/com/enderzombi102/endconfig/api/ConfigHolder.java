@@ -1,7 +1,6 @@
-package com.enderzombi102.endconfig;
+package com.enderzombi102.endconfig.api;
 
 import net.minecraft.client.gui.screen.Screen;
-import org.quiltmc.loader.api.ModContainer;
 
 import java.nio.file.Path;
 
@@ -23,8 +22,9 @@ public interface ConfigHolder<T extends Data> {
 
 	/**
 	 * Returns the config screen for this config
+	 * @param parent the parent of the config screen
 	 */
-	Screen screen();
+	Screen screen( Screen parent );
 
 	/**
 	 * Resets this config to default values.

@@ -1,12 +1,12 @@
 package com.enderzombi102.diversity.core.config;
 
-import com.enderzombi102.endconfig.ChangeListener;
-import com.enderzombi102.endconfig.ConfigHolder;
-import com.enderzombi102.endconfig.Data;
+import com.enderzombi102.endconfig.api.ChangeListener;
+import com.enderzombi102.endconfig.api.ConfigHolder;
+import com.enderzombi102.endconfig.api.Data;
 
 import java.util.Locale;
 
-import static com.enderzombi102.endconfig.ConfigOptions.*;
+import static com.enderzombi102.endconfig.api.ConfigOptions.*;
 
 public class ConfigData implements Data, ChangeListener<ConfigData> {
 	@Options({ "shaka", "laka" })

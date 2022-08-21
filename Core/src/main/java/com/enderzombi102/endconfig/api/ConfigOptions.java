@@ -1,4 +1,4 @@
-package com.enderzombi102.endconfig;
+package com.enderzombi102.endconfig.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

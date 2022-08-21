@@ -1,4 +1,4 @@
-package com.enderzombi102.endconfig;
+package com.enderzombi102.endconfig.api;
 
 import com.enderzombi102.endconfig.impl.EndConfigImpl;
 import org.quiltmc.loader.api.QuiltLoader;

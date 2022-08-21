@@ -1,15 +1,13 @@
 {
 	"required": true,
 	"minVersion": "0.8",
-	"package": "com.enderzombi102.diversity.flora.mixin",
+	"package": "com.enderzombi102.endconfig.impl.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"config.PlayerManagerMixin"
+		"PlayerManagerMixin"
 	],
 	"client": [
-		"config.ClientWorldMixin"
-	],
-	"server": [
+		"ClientWorldMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

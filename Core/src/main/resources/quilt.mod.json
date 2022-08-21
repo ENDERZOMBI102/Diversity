@@ -43,13 +43,19 @@
 		"entrypoints": {
 			"init": [
 				"com.enderzombi102.diversity.core.Core"
+			],
+			"modmenu": [
+				"com.enderzombi102.diversity.core.ModmenuCompat"
 			]
 		}
 	},
 	"minecraft": {
 		"environment": "*"
 	},
-	"mixin": "diversity-core.mixins.json",
+	"mixin": [
+		"diversity-core.mixins.json",
+		"endconfig.mixins.json"
+	],
 	"modmenu": {
 		"parent": {
 			"id": "diversity",
