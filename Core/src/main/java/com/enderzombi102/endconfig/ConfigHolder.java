@@ -1,4 +1,4 @@
-package com.enderzombi102.diversity.core.config.api;
+package com.enderzombi102.endconfig;
 
 import net.minecraft.client.gui.screen.Screen;
 import org.quiltmc.loader.api.ModContainer;
@@ -20,11 +20,6 @@ public interface ConfigHolder<T extends Data> {
 	 * Returns the modid this config is associated with
 	 */
 	String modid();
-
-	/**
-	 * Returns the ModContainer of the mod associated with this config
-	 */
-	ModContainer mod();
 
 	/**
 	 * Returns the config screen for this config

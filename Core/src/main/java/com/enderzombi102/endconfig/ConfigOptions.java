@@ -1,26 +1,36 @@
-package com.enderzombi102.diversity.core.config.api;
+package com.enderzombi102.endconfig;
+
+import blue.endless.jankson.Comment;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Contains all the annotations for fields.
+ */
 public @interface ConfigOptions {
-	byte SIDE_SERVER = 0b01;
-	byte SIDE_CLIENT = 0b10;
 
+	/**
+	 * Makes so this field is synced to the connected clients
+	 */
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
-	@interface Sync {
-		byte value();
-	}
+	@interface Sync { }
 
+	/**
+	 *
+	 */
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
-	@interface Description {
-		String value();
+	@interface Tooltip {
+		int value() default 1;
 	}
 
+	/**
+	 *
+	 */
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
 	@interface Range {
@@ -28,12 +38,18 @@ public @interface ConfigOptions {
 		double max();
 	}
 
+	/**
+	 * Will make a dropdown
+	 */
 	@Target({ ElementType.FIELD, ElementType.METHOD })
 	@Retention( RetentionPolicy.RUNTIME )
 	@interface Options {
 		String[] value();
 	}
 
+	/**
+	 *
+	 */
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
 	@interface RenamingPolicy {
@@ -44,4 +60,11 @@ public @interface ConfigOptions {
 		String to() default "";  // to config name
 		String from() default "";  // from config name
 	}
+
+	/**
+	 *
+	 */
+	@Target( ElementType.FIELD )
+	@Retention( RetentionPolicy.RUNTIME )
+	@interface Ignore { }
 }

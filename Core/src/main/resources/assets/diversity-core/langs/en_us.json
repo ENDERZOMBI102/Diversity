@@ -1,0 +1,14 @@
+{
+	"endconfig.diversity-core": {
+		"title": "Diversity: Core",
+		"test": {
+			"title": "Dropdown",
+			"description": "String with limited possibilities",
+			"tooltip": "String with limited possibilities"
+		},
+		"value": {
+			"title": "Ranged integer",
+			""
+		}
+	}
+}

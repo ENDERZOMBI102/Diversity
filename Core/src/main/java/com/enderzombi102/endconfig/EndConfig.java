@@ -1,6 +1,6 @@
-package com.enderzombi102.diversity.core.config.api;
+package com.enderzombi102.endconfig;
 
-import com.enderzombi102.diversity.core.config.impl.EndConfigImpl;
+import com.enderzombi102.endconfig.impl.EndConfigImpl;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import java.nio.file.Path;

@@ -1,10 +1,8 @@
-package com.enderzombi102.diversity.core.config.impl;
+package com.enderzombi102.endconfig.impl;
 
-import com.enderzombi102.diversity.core.config.api.ConfigHolder;
-import com.enderzombi102.diversity.core.config.api.Data;
+import com.enderzombi102.endconfig.ConfigHolder;
+import com.enderzombi102.endconfig.Data;
 import net.minecraft.client.gui.screen.Screen;
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.loader.api.QuiltLoader;
 
 import java.nio.file.Path;
 
@@ -37,13 +35,8 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 	}
 
 	@Override
-	public ModContainer mod() {
-		return QuiltLoader.getModContainer( this.modid ).orElseThrow();
-	}
-
-	@Override
 	public Screen screen() {
-		return new ConfigScreen();
+		return new ConfigScreen( this );
 	}
 
 	@Override

@@ -1,6 +1,6 @@
-package com.enderzombi102.diversity.core.config.impl;
+package com.enderzombi102.endconfig.impl;
 
-import com.enderzombi102.diversity.core.config.api.ConfigHolder;
+import com.enderzombi102.endconfig.ConfigHolder;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import net.minecraft.text.Text;
 

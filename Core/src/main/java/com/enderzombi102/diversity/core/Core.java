@@ -1,9 +1,8 @@
 package com.enderzombi102.diversity.core;
 
 import com.enderzombi102.diversity.core.config.ConfigData;
-import com.enderzombi102.diversity.core.config.api.ConfigHolder;
-import com.enderzombi102.diversity.core.config.api.Data;
-import com.enderzombi102.diversity.core.config.api.EndConfig;
+import com.enderzombi102.endconfig.ConfigHolder;
+import com.enderzombi102.endconfig.EndConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quiltmc.loader.api.ModContainer;

@@ -1,16 +1,15 @@
 package com.enderzombi102.diversity.core.config;
 
-import com.enderzombi102.diversity.core.config.api.ChangeListener;
-import com.enderzombi102.diversity.core.config.api.ConfigHolder;
-import com.enderzombi102.diversity.core.config.api.Data;
+import com.enderzombi102.endconfig.ChangeListener;
+import com.enderzombi102.endconfig.ConfigHolder;
+import com.enderzombi102.endconfig.Data;
 
 import java.util.Locale;
 
-import static com.enderzombi102.diversity.core.config.api.ConfigOptions.*;
+import static com.enderzombi102.endconfig.ConfigOptions.*;
 
 public class ConfigData implements Data, ChangeListener<ConfigData> {
 	@Options({ "shaka", "laka" })
-	@Description( "String with limited possibilities" )
 	public String test = "shaka";
 
 	@RenamingPolicy("custom")
@@ -19,9 +18,9 @@ public class ConfigData implements Data, ChangeListener<ConfigData> {
 	@RenamingPolicy("camel")
 	public SomeEnum enumValue2 = SomeEnum.ENUM;
 
-	@Sync( SIDE_SERVER | SIDE_CLIENT )
+	@Sync()
 	@Range( min=0, max=100 )
-	@Description( "A cool integer" )
+	@Tooltip()
 	public int value = 0;
 
 	@Override

@@ -1,9 +1,9 @@
-package com.enderzombi102.diversity.core.config.impl;
+package com.enderzombi102.endconfig.impl;
 
 import blue.endless.jankson.Jankson;
-import com.enderzombi102.diversity.core.config.api.ChangeListener;
-import com.enderzombi102.diversity.core.config.api.ConfigHolder;
-import com.enderzombi102.diversity.core.config.api.Data;
+import com.enderzombi102.endconfig.ChangeListener;
+import com.enderzombi102.endconfig.ConfigHolder;
+import com.enderzombi102.endconfig.Data;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
