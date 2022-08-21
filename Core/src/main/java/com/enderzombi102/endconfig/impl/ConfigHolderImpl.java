@@ -1,5 +1,6 @@
 package com.enderzombi102.endconfig.impl;
 
+import blue.endless.jankson.JsonObject;
 import com.enderzombi102.endconfig.ConfigHolder;
 import com.enderzombi102.endconfig.Data;
 import net.minecraft.client.gui.screen.Screen;
@@ -21,6 +22,7 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 
 	@Override
 	public T get() {
+		// TODO: load from disk if necessary
 		return this.data;
 	}
 
@@ -43,5 +45,9 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 	@SuppressWarnings("unchecked")
 	public void reset() {
 		this.data = doSafely( () -> (T) this.data.getClass().getConstructor().newInstance() );
+	}
+
+	void update( JsonObject obj ) {
+		// TODO: Read from json
 	}
 }

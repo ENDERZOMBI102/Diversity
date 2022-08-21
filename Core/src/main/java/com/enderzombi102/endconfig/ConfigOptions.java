@@ -1,7 +1,5 @@
 package com.enderzombi102.endconfig;
 
-import blue.endless.jankson.Comment;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -50,11 +48,27 @@ public @interface ConfigOptions {
 	/**
 	 *
 	 */
+	@Target(ElementType.FIELD)
+	@Retention( RetentionPolicy.RUNTIME )
+	@interface Name {
+		String value();
+	}
+
+	/**
+	 * Used to determine how enum members should be named
+	 */
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
 	@interface RenamingPolicy {
-		// custom = static methods "from(String) -> String" and "to(String) -> String" in enum class
-		@Options({ "camel", "pascal", "custom" })
+		// `custom` may mean two things:
+		//  - @Name("") annotations on enum values
+		//  - static methods "from(String): String" and "to(String): String" in enum class
+		// the name resolution follows this order:
+		//  1. @Name annotation
+		//  2. to/from functions
+		//  3. camelcase
+
+		@Options({ "camel", "snake", "pascal", "custom", "named" })
 		String value();
 
 		String to() default "";  // to config name

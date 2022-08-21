@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.enderzombi102.enderlib.ListUtil.append;
+import static com.enderzombi102.enderlib.ListUtil.mutableListOf;
+
 public class EndConfigImpl {
 	static final Jankson JANKSON = Jankson.builder().build();
 	static final BiMap<String, ConfigHolder<?>> CONFIGS = HashBiMap.create();
@@ -19,6 +22,9 @@ public class EndConfigImpl {
 
 	public static <T extends Data> void register( String modid, Path path, T config ) {
 		CONFIGS.put( modid, new ConfigHolderImpl<>( modid, path, config ) );
+		// if it's also a listener for itself, add it
+		if ( config instanceof ChangeListener<?> listener )
+			registerChangeListener( modid, listener );
 	}
 
 	@SuppressWarnings("unchecked")
@@ -31,10 +37,15 @@ public class EndConfigImpl {
 
 	public static void save( String modid ) {
 		var config = get( modid );
+		// TODO: Serialize
 	}
 
-
-
 	public static <T extends Data> void registerChangeListener( String modid, ChangeListener<T> listener ) {
+		LISTENERS.compute(
+			modid,
+			( key, value ) -> value == null ?
+				mutableListOf( listener ) :
+				append( value, listener )
+		);
 	}
 }
