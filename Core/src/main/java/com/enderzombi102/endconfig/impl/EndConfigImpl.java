@@ -1,32 +1,28 @@
 package com.enderzombi102.endconfig.impl;
 
-import blue.endless.jankson.Jankson;
 import blue.endless.jankson.api.SyntaxError;
 import com.enderzombi102.endconfig.api.ChangeListener;
 import com.enderzombi102.endconfig.api.ConfigHolder;
 import com.enderzombi102.endconfig.api.Data;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
+import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
+import static com.enderzombi102.endconfig.impl.Const.CONFIG_SYNC_ID;
+import static com.enderzombi102.endconfig.impl.Const.JANKSON;
 import static com.enderzombi102.enderlib.ListUtil.append;
 import static com.enderzombi102.enderlib.ListUtil.mutableListOf;
 
 public class EndConfigImpl implements ModInitializer {
-	public static final Identifier CONFIG_SYNC_ID = new Identifier( "endconfig", "config_sync" );
-	static final Jankson JANKSON = Jankson.builder().build();
 	static final BiMap<String, ConfigHolder<?>> CONFIGS = HashBiMap.create();
 	static final Map<String, List<ChangeListener<?>>> LISTENERS = new HashMap<>();
 
@@ -60,9 +56,17 @@ public class EndConfigImpl implements ModInitializer {
 	}
 
 	public static void sendConfigs( ServerPlayerEntity player ) {
+		for ( var holder : CONFIGS.values() ) {
+			ServerPlayNetworking.send(
+				player,
+				CONFIG_SYNC_ID,
+				( (ConfigHolderImpl<?>) holder ).packet()
+			);
+		}
 	}
 
 	public static void reloadConfigs() {
+		// reload all configs from disk, only called on client
 	}
 
 	@Override

@@ -3,14 +3,14 @@ package com.enderzombi102.endconfig.impl;
 import blue.endless.jankson.JsonObject;
 import com.enderzombi102.endconfig.api.ConfigHolder;
 import com.enderzombi102.endconfig.api.Data;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.ActionResult;
-import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
+import net.minecraft.network.PacketByteBuf;
+import org.quiltmc.qsl.networking.api.PacketByteBufs;
 
 import java.nio.file.Path;
-import java.util.Objects;
 
+import static com.enderzombi102.endconfig.impl.Const.JANKSON;
+import static com.enderzombi102.endconfig.impl.Const.MINIFIED;
 import static com.enderzombi102.enderlib.SafeUtils.doSafely;
 
 public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
@@ -51,7 +51,19 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 		this.data = doSafely( () -> (T) this.data.getClass().getConstructor().newInstance() );
 	}
 
+	// region IMPL DETAIL
+
 	void update( JsonObject obj ) {
 		// TODO: Read from json
 	}
+
+	public PacketByteBuf packet() {
+		// return the PacketByteBuf version of this config
+		var buf = PacketByteBufs.create();
+		buf.writeString( modid );
+		buf.writeString( JANKSON.toJson( get() ).toJson(MINIFIED) );
+		return buf;
+	}
+
+	// endregion
 }
