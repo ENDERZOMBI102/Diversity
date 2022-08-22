@@ -1,5 +1,7 @@
 package com.enderzombi102.endconfig.api;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 
 import java.nio.file.Path;
@@ -24,6 +26,7 @@ public interface ConfigHolder<T extends Data> {
 	 * Returns the config screen for this config
 	 * @param parent the parent of the config screen
 	 */
+	@Environment( EnvType.CLIENT )
 	Screen screen( Screen parent );
 
 	/**

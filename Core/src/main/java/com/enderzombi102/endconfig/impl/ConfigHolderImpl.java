@@ -3,6 +3,8 @@ package com.enderzombi102.endconfig.impl;
 import blue.endless.jankson.JsonObject;
 import com.enderzombi102.endconfig.api.ConfigHolder;
 import com.enderzombi102.endconfig.api.Data;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.network.PacketByteBuf;
 import org.quiltmc.qsl.networking.api.PacketByteBufs;
@@ -40,6 +42,7 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 	}
 
 	@Override
+	@Environment( EnvType.CLIENT )
 	public Screen screen( Screen parent ) {
 		return new ConfigScreen( this, parent );
 	}
