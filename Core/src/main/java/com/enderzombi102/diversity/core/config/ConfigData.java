@@ -8,9 +8,10 @@ import java.util.Locale;
 
 import static com.enderzombi102.endconfig.api.ConfigOptions.*;
 
+@Sync
 public class ConfigData implements Data, ChangeListener<ConfigData> {
+	@Tooltip
 	@Options({ "shaka", "laka" })
-	@Tooltip()
 	public String test = "shaka";
 
 	@RenamingPolicy("custom")
@@ -22,18 +23,19 @@ public class ConfigData implements Data, ChangeListener<ConfigData> {
 	@RenamingPolicy("camel")
 	public SomeEnum enumValue3 = SomeEnum.ENUM;
 
-
-	@Sync()
-	@Range( min=0, max=100 )
 	@Tooltip(2)
+	@Range( min=0, max=100 )
 	public int value = 0;
+
+	@Sync(false)
+	public int notSynced = 199;
 
 	@Ignore
 	public int shouldNotExist = 0;
 
 	@Override
 	public void onChange( ConfigHolder<ConfigData> config ) {
-
+		System.out.println("[ConfigData::onChange()] Received change event!");
 	}
 
 

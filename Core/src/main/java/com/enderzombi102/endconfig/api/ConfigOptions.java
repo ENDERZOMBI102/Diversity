@@ -11,11 +11,14 @@ import java.lang.annotation.Target;
 public @interface ConfigOptions {
 
 	/**
-	 * Makes so this field is synced to the connected clients
+	 * Annotating a class with this will mark every field as needed to be synced to clients.
+	 * Annotating a field will overwrite per-class Sync with the provided value.
 	 */
-	@Target( ElementType.FIELD )
+	@Target({ ElementType.FIELD, ElementType.TYPE })
 	@Retention( RetentionPolicy.RUNTIME )
-	@interface Sync { }
+	@interface Sync {
+		boolean value() default true;
+	}
 
 	/**
 	 *
@@ -46,7 +49,7 @@ public @interface ConfigOptions {
 	}
 
 	/**
-	 *
+	 * Sets the name of a enum value directly on the value.
 	 */
 	@Target(ElementType.FIELD)
 	@Retention( RetentionPolicy.RUNTIME )
@@ -55,7 +58,7 @@ public @interface ConfigOptions {
 	}
 
 	/**
-	 * Used to determine how enum members should be named
+	 * Used to determine how a field's enum member instances should be named.
 	 */
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
@@ -76,7 +79,7 @@ public @interface ConfigOptions {
 	}
 
 	/**
-	 *
+	 * Fields marked with this annotation will not be picked up by the library.
 	 */
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
