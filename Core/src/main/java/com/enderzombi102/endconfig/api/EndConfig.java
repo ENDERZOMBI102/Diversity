@@ -13,29 +13,29 @@ public class EndConfig {
 	 * Registers a config.
 	 * @param modid id of the owner mod
 	 * @param filePath path to save the config to
-	 * @param config config object
+	 * @param configClass config object
 	 */
-	public static <T extends Data> void register( String modid, Path filePath, T config ) {
-		EndConfigImpl.register( modid, filePath, config );
+	public static <T extends Data> void register( String modid, Path filePath, Class<T> configClass ) {
+		EndConfigImpl.register( modid, filePath, configClass );
 	}
 
 	/**
 	 * Registers a config.
 	 * @param modid id of the owner mod
 	 * @param filename name of the config file on disk
-	 * @param config config object
+	 * @param configClass config object
 	 */
-	public static <T extends Data> void register( String modid, String filename, T config ) {
-		EndConfigImpl.register( modid, QuiltLoader.getConfigDir().resolve( filename ), config );
+	public static <T extends Data> void register( String modid, String filename, Class<T> configClass ) {
+		EndConfigImpl.register( modid, QuiltLoader.getConfigDir().resolve( filename ), configClass );
 	}
 
 	/**
 	 * Registers a config.
 	 * @param modid id of the owner mod
-	 * @param config config object
+	 * @param configClass config object
 	 */
-	public static <T extends Data> void register( String modid, T config ) {
-		EndConfigImpl.register( modid, QuiltLoader.getConfigDir().resolve( modid + ".json5" ), config );
+	public static <T extends Data> void register( String modid, Class<T> configClass ) {
+		EndConfigImpl.register( modid, QuiltLoader.getConfigDir().resolve( modid + ".json5" ), configClass );
 	}
 
 	/**

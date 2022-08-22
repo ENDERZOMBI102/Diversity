@@ -20,7 +20,7 @@ public class ConfigData implements Data, ChangeListener<ConfigData> {
 	@RenamingPolicy("named")
 	public SomeOtherEnum enumValue2 = SomeOtherEnum.ENUM;
 
-	@RenamingPolicy("camel")
+	@RenamingPolicy("pascal")
 	public SomeEnum enumValue3 = SomeEnum.ENUM;
 
 	@Tooltip(2)
@@ -44,13 +44,13 @@ public class ConfigData implements Data, ChangeListener<ConfigData> {
 		ENUM;
 
 		// to config
-		public static String to( String value ) {
-			return value.toLowerCase( Locale.ROOT );
+		public static String to( SomeEnum value ) {
+			return value.name().toLowerCase( Locale.ROOT );
 		}
 
 		// from config
-		public static String from( String value ) {
-			return value.toUpperCase(Locale.ROOT);
+		public static SomeEnum from( String value ) {
+			return SomeEnum.SOME;
 		}
 	}
 

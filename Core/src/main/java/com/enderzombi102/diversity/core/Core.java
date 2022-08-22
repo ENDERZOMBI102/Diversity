@@ -14,7 +14,7 @@ public class Core implements ModInitializer {
 
 	@Override
 	public void onInitialize(ModContainer mod) {
-		EndConfig.register( MODID, new ConfigData() );
+		EndConfig.register( MODID, ConfigData.class );
 		EndConfig.registerChangeListener( MODID, Core::onConfigChanged );
 
 		LOGGER.info( "Let's get diverse!" );

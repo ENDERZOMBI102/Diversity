@@ -63,19 +63,15 @@ public @interface ConfigOptions {
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
 	@interface RenamingPolicy {
-		// `custom` may mean two things:
-		//  - @Name("") annotations on enum values
-		//  - static methods "from(String): String" and "to(String): String" in enum class
+		//  `named` = @Name("") annotations on enum values
+		//  `custom` = static methods "from(String): String" and "to(String): String" in enum class
 		// the name resolution follows this order:
 		//  1. @Name annotation
 		//  2. to/from functions
-		//  3. camelcase
+		//  3. PascalCase
 
-		@Options({ "camel", "snake", "pascal", "custom", "named" })
+		@Options({ "pascal", "snake", "custom", "named" })
 		String value();
-
-		String to() default "";  // to config name
-		String from() default "";  // from config name
 	}
 
 	/**
