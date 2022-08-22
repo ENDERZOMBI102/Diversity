@@ -9,8 +9,7 @@ import org.quiltmc.qsl.networking.api.PacketByteBufs;
 
 import java.nio.file.Path;
 
-import static com.enderzombi102.endconfig.impl.Const.JANKSON;
-import static com.enderzombi102.endconfig.impl.Const.MINIFIED;
+import static com.enderzombi102.endconfig.impl.Const.*;
 import static com.enderzombi102.enderlib.SafeUtils.doSafely;
 
 public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
@@ -55,6 +54,7 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 
 	void update( JsonObject obj ) {
 		// TODO: Read from json
+		LOGGER.info("{}", obj);
 	}
 
 	public PacketByteBuf packet() {
