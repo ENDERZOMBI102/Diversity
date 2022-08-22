@@ -44,6 +44,9 @@
 			"init": [
 				"com.enderzombi102.diversity.core.Core"
 			],
+			"client_init": [
+				"com.enderzombi102.endconfig.impl.EndConfigImpl"
+			],
 			"modmenu": [
 				"com.enderzombi102.diversity.core.ModmenuCompat"
 			]
@@ -54,7 +57,8 @@
 	},
 	"mixin": [
 		"diversity-core.mixins.json",
-		"endconfig.mixins.json"
+		"endconfig.mixins.json",
+		"enderlib.mixins.json"
 	],
 	"modmenu": {
 		"parent": {

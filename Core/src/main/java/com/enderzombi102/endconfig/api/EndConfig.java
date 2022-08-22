@@ -5,6 +5,9 @@ import org.quiltmc.loader.api.QuiltLoader;
 
 import java.nio.file.Path;
 
+/**
+ * A config library like no otha.
+ */
 public class EndConfig {
 	/**
 	 * Registers a config.

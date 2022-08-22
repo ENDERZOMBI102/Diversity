@@ -3,6 +3,7 @@ package com.enderzombi102.endconfig.api;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
+import org.quiltmc.loader.api.ModContainer;
 
 import java.nio.file.Path;
 
@@ -23,6 +24,11 @@ public interface ConfigHolder<T extends Data> {
 	String modid();
 
 	/**
+	 * Returns the {@link ModContainer} of the mod this config is associated with
+	 */
+	ModContainer mod();
+
+	/**
 	 * Returns the config screen for this config
 	 * @param parent the parent of the config screen
 	 */
@@ -30,7 +36,8 @@ public interface ConfigHolder<T extends Data> {
 	Screen screen( Screen parent );
 
 	/**
-	 * Resets this config to default values.
+	 * Resets this config.
+	 * @param toDefault if reset to defaults.
 	 */
-	void reset();
+	void reset( boolean toDefault );
 }

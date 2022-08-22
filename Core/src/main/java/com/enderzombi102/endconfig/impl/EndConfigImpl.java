@@ -6,12 +6,13 @@ import com.enderzombi102.endconfig.api.ConfigHolder;
 import com.enderzombi102.endconfig.api.Data;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
+import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
-import org.slf4j.Logger;
 
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -23,15 +24,16 @@ import static com.enderzombi102.endconfig.impl.Const.JANKSON;
 import static com.enderzombi102.enderlib.ListUtil.append;
 import static com.enderzombi102.enderlib.ListUtil.mutableListOf;
 
-public class EndConfigImpl implements ModInitializer {
+public class EndConfigImpl implements ClientModInitializer {
 	static final BiMap<String, ConfigHolder<?>> CONFIGS = HashBiMap.create();
 	static final Map<String, List<ChangeListener<?>>> LISTENERS = new HashMap<>();
 
-	public static <T extends Data> void register( String modid, Path path, T config ) {
-		CONFIGS.put( modid, new ConfigHolderImpl<>( modid, path, config ) );
+	public static <T extends Data> void register( String modid, Path path, Class<T> dataClass ) {
+		var holder = new ConfigHolderImpl<>( modid, path, dataClass );
+		CONFIGS.put( modid, holder );
 		// if it's also a listener for itself, add it
-		if ( config instanceof ChangeListener<?> listener )
-			registerChangeListener( modid, listener );
+		if ( ChangeListener.class.isAssignableFrom( dataClass ) )
+			registerChangeListener( modid, (ChangeListener<?>) holder.get() );
 	}
 
 	@SuppressWarnings("unchecked")
@@ -43,7 +45,9 @@ public class EndConfigImpl implements ModInitializer {
 	}
 
 	public static void save( String modid ) {
-		var config = get( modid );
+		var holder = get( modid );
+		var path = holder.path();
+
 		// TODO: Serialize
 	}
 
@@ -71,7 +75,8 @@ public class EndConfigImpl implements ModInitializer {
 	}
 
 	@Override
-	public void onInitialize( ModContainer mod ) {
+	@Environment( EnvType.CLIENT )
+	public void onInitializeClient( ModContainer mod ) {
 		ClientPlayNetworking.registerGlobalReceiver( CONFIG_SYNC_ID, ( client, networkHandler, data, sender) -> {
 			var modid = data.readString();
 			var config = data.readString();

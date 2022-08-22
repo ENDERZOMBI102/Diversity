@@ -5,6 +5,7 @@ import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Language;
 import org.jetbrains.annotations.Nullable;
 
 public class ConfigScreen extends SpruceScreen {
@@ -12,9 +13,19 @@ public class ConfigScreen extends SpruceScreen {
 	private final @Nullable Screen parent;
 
 	ConfigScreen( ConfigHolder<?> holder, @Nullable Screen parent ) {
-		super( Text.translatable( "endconfig." + holder.modid() + ".title" ) );
+		super(
+			Language.getInstance().hasTranslation( "endconfig." + holder.modid() + ".title" ) ?
+				Text.translatable( "endconfig." + holder.modid() + ".title" ) :
+				Text.literal( holder.mod().metadata().name() )
+		);
 		this.holder = holder;
 		this.parent = parent;
+	}
+
+	@Override
+	public void closeScreen() {
+		assert this.client != null;
+		this.client.setScreen( parent );
 	}
 
 	@Override
