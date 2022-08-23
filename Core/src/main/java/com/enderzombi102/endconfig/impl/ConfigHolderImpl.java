@@ -1,8 +1,10 @@
 package com.enderzombi102.endconfig.impl;
 
 import blue.endless.jankson.JsonElement;
+import blue.endless.jankson.JsonNull;
 import blue.endless.jankson.JsonObject;
 import blue.endless.jankson.JsonPrimitive;
+import blue.endless.jankson.api.SyntaxError;
 import com.enderzombi102.endconfig.api.ConfigHolder;
 import com.enderzombi102.endconfig.api.ConfigOptions.Ignore;
 import com.enderzombi102.endconfig.api.ConfigOptions.RenamingPolicy;
@@ -16,12 +18,12 @@ import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.networking.api.PacketByteBufs;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.function.Function;
 
-import static com.enderzombi102.endconfig.impl.Const.LOGGER;
-import static com.enderzombi102.endconfig.impl.Const.MINIFIED;
+import static com.enderzombi102.endconfig.impl.Const.*;
 import static com.enderzombi102.enderlib.SafeUtils.doSafely;
 
 public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
@@ -29,6 +31,7 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 	private final String modid;
 	private final Path path;
 	private T data = null;
+	private boolean overwrittenByServer = false;
 
 	public ConfigHolderImpl( String modid, Path path, Class<T> dataClass ) {
 		this.dataClass = dataClass;
@@ -55,7 +58,7 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 
 	@Override
 	public ModContainer mod() {
-		return QuiltLoader.getModContainer( this.modid ).orElseThrow();
+		return QuiltLoader.getModContainer( this.modid() ).orElseThrow();
 	}
 
 	@Override
@@ -75,37 +78,36 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 	// region IMPL DETAIL
 
 	private void loadFromDisk() {
-		this.data = doSafely( this.dataClass::newInstance );
+		try {
+			this.data = JANKSON.fromJson( Files.readString( this.path() ), this.dataClass );
+		} catch ( SyntaxError | IOException e ) {
+			LOGGER.error( "Failed to load {}'s config from disk!", this.modid(), e );
+			LOGGER.warn( "Setting {}'s config to default...", this.modid() );
+			this.reset( true );
+		}
 	}
 
 	void update( JsonObject obj ) {
-		// TODO: Read from json
-		LOGGER.info("{}", obj);
+		deserialize( this.data, obj, this.modid() );
 	}
 
 	public PacketByteBuf packet() {
-		// return the PacketByteBuf version of this config
-		var buf = PacketByteBufs.create();
-		buf.writeString( modid );
-		buf.writeString( doSafely( () -> serialize( get(), true ).toJson(MINIFIED) ) );
-		return buf;
+		return PacketByteBufs.create()
+			.writeString( this.modid() )
+			.writeString( doSafely( () -> serialize( get(), true, this.modid() ).toJson(MINIFIED) ) );
 	}
 
-	private static JsonElement serialize( Object data, boolean sync ) throws IllegalAccessException {
+	private static JsonElement serialize( Object data, boolean sync, String modid ) throws IllegalAccessException {
 		var object = new JsonObject();
-		var globalSyncSetting = Optional.ofNullable( data.getClass().getAnnotation( Sync.class ) )
-			.map( Sync::value )
-			.orElse( false );
+		var globalSyncSetting = Util.annotationOr( data.getClass(), Sync.class, Sync::value,false );
 
 		for ( var field : data.getClass().getFields() ) {
 			// ignore fields marked with @Ignore
 			if ( field.isAnnotationPresent( Ignore.class ) )
 				continue;
 			// ignore unsyncable elements in sync mode
-			if (
-				sync &&
-				!Optional.ofNullable( field.getAnnotation( Sync.class ) ).map( Sync::value ).orElse( globalSyncSetting )
-			) continue;
+			if ( sync && !Util.annotationOr( field, Sync.class, Sync::value, globalSyncSetting ) )
+				continue;
 			var value = field.get( data );
 
 			// region object to json element
@@ -128,29 +130,94 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 				element = JsonPrimitive.of( aByte.longValue() );
 			} else if ( value instanceof Enum<?> anEnum ) {
 				// it's an enum
-				Function<Enum<?>, String> transform = Util::toPascal;
+				Function<Enum<?>, String> transform = Util::asIs;
 				if ( field.isAnnotationPresent( RenamingPolicy.class ) ) {
 					transform = switch ( field.getAnnotation( RenamingPolicy.class ).value() ) {
 						case "pascal" -> Util::toPascal; // PascalCase
 						case "snake" -> Util::toSnake;   // snake_case
-						case "custom" -> Util::custom;	 // to() call
 						case "named" -> Util::named;	 // @Name() value
-						default -> throw new IllegalStateException();
+						case "asis" -> Util::asIs;	 	 // Enum::Name() value
+						default -> throw new IllegalStateException(
+							"Mod %s has set `RenamingPolicy` on field `%s` to an invalid value `%s`!".formatted(
+								modid,
+								field.getDeclaringClass().getName() + "::" + field.getName(),
+								field.getAnnotation( RenamingPolicy.class ).value()
+							)
+						);
 					};
 				}
 
 				element = JsonPrimitive.of( transform.apply( anEnum ) );
+			} else if ( value == null ) {
+				element = JsonNull.INSTANCE;
 			} else {
 				// it's another object
-				element = serialize( value, sync );
+				element = serialize( value, sync, modid );
 			}
 			// endregion
 
 			object.put( field.getName(), element );
 		}
 
-
 		return object;
+	}
+
+	private static void deserialize( Object dest, JsonObject obj, String modid ) {
+		for ( var field : dest.getClass().getDeclaredFields() )
+			if ( obj.containsKey( field.getName() ) ) {
+				try {
+					if ( field.getType().equals( String.class ) ) {
+						field.set( dest, obj.get( field.getName() ) );
+
+					} else if ( field.getType().equals( Integer.class ) ) {
+						field.set( dest, obj.getInt( field.getName(), field.getInt( dest ) ) );
+
+					} else if ( field.getType().equals( Long.class ) ) {
+						field.set( dest, obj.getLong( field.getName(), field.getLong( dest ) ) );
+
+					} else if ( field.getType().equals( Double.class ) ) {
+						field.set( dest, obj.get( field.getName() );
+
+					} else if ( field.getType().equals( Float.class ) ) {
+						field.set( dest, obj.get( field.getName() );
+
+					} else if ( field.getType().equals( Boolean.class ) ) {
+						field.set( dest, obj.get( field.getName() );
+
+					} else if ( field.getType().equals( Short.class ) ) {
+						field.set( dest, obj.get( field.getName() );
+
+					} else if ( field.getType().equals( Byte.class ) ) {
+						field.set( dest, obj.get( field.getName() );
+
+					} else if ( value instanceof Enum<?> anEnum ) {
+						// it's an enum
+						Function<Enum<?>, String> transform = Util::asIs;
+						if ( field.isAnnotationPresent( RenamingPolicy.class ) ) {
+							transform = switch ( field.getAnnotation( RenamingPolicy.class ).value() ) {
+								case "pascal" -> Util::toPascal; // PascalCase
+								case "snake" -> Util::toSnake;   // snake_case
+								case "named" -> Util::named;	 // @Name() value
+								case "asis" -> Util::asIs;	 	 // Enum::Name() value
+								default -> throw new IllegalStateException(
+									"Mod %s has set `RenamingPolicy` on field `%s` to an invalid value `%s`!".formatted(
+										modid,
+										field.getDeclaringClass().getName() + "::" + field.getName(),
+										field.getAnnotation( RenamingPolicy.class ).value()
+									)
+								);
+							};
+						}
+
+						field.set( dest, JsonPrimitive.of( transform.apply( anEnum ) );
+					} else if ( value == null ) {
+						field.set( dest, JsonNull.INSTANCE;
+					} else {
+						// it's another object
+						deserialize( field.get( dest ), obj.getObject( field.getName() ), modid );
+					}
+				} catch ( IllegalAccessException ignore ) { }
+			}
 	}
 
 	// endregion

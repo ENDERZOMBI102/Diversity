@@ -14,7 +14,6 @@ public class ConfigData implements Data, ChangeListener<ConfigData> {
 	@Options({ "shaka", "laka" })
 	public String test = "shaka";
 
-	@RenamingPolicy("custom")
 	public SomeEnum enumValue = SomeEnum.SOME;
 
 	@RenamingPolicy("named")

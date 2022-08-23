@@ -64,13 +64,7 @@ public @interface ConfigOptions {
 	@Retention( RetentionPolicy.RUNTIME )
 	@interface RenamingPolicy {
 		//  `named` = @Name("") annotations on enum values
-		//  `custom` = static methods "from(String): String" and "to(String): String" in enum class
-		// the name resolution follows this order:
-		//  1. @Name annotation
-		//  2. to/from functions
-		//  3. PascalCase
-
-		@Options({ "pascal", "snake", "custom", "named" })
+		@Options({ "asis", "pascal", "snake", "named" })
 		String value();
 	}
 
