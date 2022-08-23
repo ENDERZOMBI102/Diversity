@@ -21,9 +21,11 @@ import org.quiltmc.qsl.networking.api.PacketByteBufs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.enderzombi102.endconfig.impl.Const.*;
+import static com.enderzombi102.endconfig.impl.Util.*;
 import static com.enderzombi102.enderlib.SafeUtils.doSafely;
 
 public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
@@ -99,14 +101,14 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 
 	private static JsonElement serialize( Object data, boolean sync, String modid ) throws IllegalAccessException {
 		var object = new JsonObject();
-		var globalSyncSetting = Util.annotationOr( data.getClass(), Sync.class, Sync::value,false );
+		var globalSyncSetting = annotationOr( data.getClass(), Sync.class, Sync::value,false );
 
 		for ( var field : data.getClass().getFields() ) {
 			// ignore fields marked with @Ignore
 			if ( field.isAnnotationPresent( Ignore.class ) )
 				continue;
 			// ignore unsyncable elements in sync mode
-			if ( sync && !Util.annotationOr( field, Sync.class, Sync::value, globalSyncSetting ) )
+			if ( sync && !annotationOr( field, Sync.class, Sync::value, globalSyncSetting ) )
 				continue;
 			var value = field.get( data );
 
@@ -162,41 +164,34 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 		return object;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void deserialize( Object dest, JsonObject obj, String modid ) {
 		for ( var field : dest.getClass().getDeclaredFields() )
 			if ( obj.containsKey( field.getName() ) ) {
 				try {
 					if ( field.getType().equals( String.class ) ) {
-						field.set( dest, obj.get( field.getName() ) );
-
-					} else if ( field.getType().equals( Integer.class ) ) {
+						field.set( dest, obj.get( String.class, field.getName() ) );
+					} else if ( INTEGER.contains( field.getType() ) ) {
 						field.set( dest, obj.getInt( field.getName(), field.getInt( dest ) ) );
-
-					} else if ( field.getType().equals( Long.class ) ) {
+					} else if ( LONG.contains( field.getType() ) ) {
 						field.set( dest, obj.getLong( field.getName(), field.getLong( dest ) ) );
-
-					} else if ( field.getType().equals( Double.class ) ) {
-						field.set( dest, obj.get( field.getName() );
-
-					} else if ( field.getType().equals( Float.class ) ) {
-						field.set( dest, obj.get( field.getName() );
-
-					} else if ( field.getType().equals( Boolean.class ) ) {
-						field.set( dest, obj.get( field.getName() );
-
-					} else if ( field.getType().equals( Short.class ) ) {
-						field.set( dest, obj.get( field.getName() );
-
-					} else if ( field.getType().equals( Byte.class ) ) {
-						field.set( dest, obj.get( field.getName() );
-
-					} else if ( value instanceof Enum<?> anEnum ) {
+					} else if ( DOUBLE.contains( field.getType() ) ) {
+						field.set( dest, obj.getDouble( field.getName(), field.getDouble( dest ) ) );
+					} else if ( FLOAT.contains( field.getType() ) ) {
+						field.set( dest, obj.getFloat( field.getName(), field.getFloat( dest ) ) );
+					} else if ( BOOLEAN.contains( field.getType() ) ) {
+						field.set( dest, obj.getBoolean( field.getName(), field.getBoolean( dest ) ) );
+					} else if ( SHORT.contains( field.getType() ) ) {
+						field.set( dest, obj.getShort( field.getName(), field.getShort( dest ) ) );
+					} else if ( BYTE.contains( field.getType() ) ) {
+						field.set( dest, obj.getByte( field.getName(), field.getByte( dest ) ) );
+					} else if ( field.getType().isEnum() ) {
 						// it's an enum
-						Function<Enum<?>, String> transform = Util::asIs;
+						BiFunction< String, Class< Enum<?> >, Enum<?> > transform = Util::asIs;
 						if ( field.isAnnotationPresent( RenamingPolicy.class ) ) {
 							transform = switch ( field.getAnnotation( RenamingPolicy.class ).value() ) {
-								case "pascal" -> Util::toPascal; // PascalCase
-								case "snake" -> Util::toSnake;   // snake_case
+								case "pascal" -> Util::fromPascal; // PascalCase
+								case "snake" -> Util::fromSnake;   // snake_case
 								case "named" -> Util::named;	 // @Name() value
 								case "asis" -> Util::asIs;	 	 // Enum::Name() value
 								default -> throw new IllegalStateException(
@@ -209,14 +204,15 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 							};
 						}
 
-						field.set( dest, JsonPrimitive.of( transform.apply( anEnum ) );
-					} else if ( value == null ) {
-						field.set( dest, JsonNull.INSTANCE;
+						field.set( dest, transform.apply( obj.get( String.class, field.getName() ), (Class<Enum<?>>) field.getType() ) );
+
 					} else {
 						// it's another object
 						deserialize( field.get( dest ), obj.getObject( field.getName() ), modid );
 					}
-				} catch ( IllegalAccessException ignore ) { }
+				} catch ( IllegalAccessException e ) {
+					LOGGER.error( "Failed to deserialize {}'s config sent from the server...", modid, e );
+				}
 			}
 	}
 
