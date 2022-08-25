@@ -10,6 +10,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
@@ -19,8 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.enderzombi102.endconfig.impl.Const.CONFIG_SYNC_ID;
-import static com.enderzombi102.endconfig.impl.Const.JANKSON;
+import static com.enderzombi102.endconfig.impl.Const.*;
 import static com.enderzombi102.enderlib.ListUtil.append;
 import static com.enderzombi102.enderlib.ListUtil.mutableListOf;
 
@@ -29,6 +29,7 @@ public class EndConfigImpl implements ClientModInitializer {
 	static final Map<String, List<ChangeListener<?>>> LISTENERS = new HashMap<>();
 
 	public static <T extends Data> void register( String modid, Path path, Class<T> dataClass ) {
+		LOGGER.info( "Registered new config for `{}` at `{}`", modid, path.relativize( QuiltLoader.getGameDir() ) );
 		var holder = new ConfigHolderImpl<>( modid, path, dataClass );
 		CONFIGS.put( modid, holder );
 		// if it's also a listener for itself, add it
@@ -52,6 +53,7 @@ public class EndConfigImpl implements ClientModInitializer {
 	}
 
 	public static <T extends Data> void registerChangeListener( String modid, ChangeListener<T> listener ) {
+		LOGGER.info( "Registered new change listener for {}'s config", modid );
 		LISTENERS.compute(
 			modid,
 			( key, value ) -> value == null ?
@@ -68,6 +70,7 @@ public class EndConfigImpl implements ClientModInitializer {
 				( (ConfigHolderImpl<?>) holder ).packet()
 			);
 		}
+		LOGGER.info( "Sent {} configs to {}", CONFIGS.size(), player.getName() );
 	}
 
 	public static void reloadConfigs() {

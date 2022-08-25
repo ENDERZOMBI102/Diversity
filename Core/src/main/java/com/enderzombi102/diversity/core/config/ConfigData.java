@@ -4,9 +4,11 @@ import com.enderzombi102.endconfig.api.ChangeListener;
 import com.enderzombi102.endconfig.api.ConfigHolder;
 import com.enderzombi102.endconfig.api.Data;
 
+import java.util.List;
 import java.util.Locale;
 
 import static com.enderzombi102.endconfig.api.ConfigOptions.*;
+import static com.enderzombi102.enderlib.ListUtil.mutableListOf;
 
 @Sync
 public class ConfigData implements Data, ChangeListener<ConfigData> {
@@ -28,6 +30,9 @@ public class ConfigData implements Data, ChangeListener<ConfigData> {
 
 	@Sync(false)
 	public int notSynced = 199;
+
+	@Tooltip
+	public List<String> data = mutableListOf( "Hello", "world", "!" );
 
 	@Ignore
 	public int shouldNotExist = 0;
