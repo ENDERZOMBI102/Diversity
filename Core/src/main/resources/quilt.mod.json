@@ -57,8 +57,7 @@
 	},
 	"mixin": [
 		"diversity-core.mixins.json",
-		"endconfig.mixins.json",
-		"enderlib.mixins.json"
+		"endconfig.mixins.json"
 	],
 	"modmenu": {
 		"parent": {
