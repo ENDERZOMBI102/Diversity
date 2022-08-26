@@ -52,7 +52,7 @@ subprojects {
 		}
 
 		/* lib dependencies */
-		implementation "com.enderzombi102:EnderLib:$enderlib_version"
+		implementation "com.enderzombi102.EnderLib:minecraft:$enderlib_version"
 
 		implementation "org.jetbrains:annotations:$annotations_version"
 
