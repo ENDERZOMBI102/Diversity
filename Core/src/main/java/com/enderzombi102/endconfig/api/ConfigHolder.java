@@ -44,4 +44,6 @@ public interface ConfigHolder<T extends Data> {
 	 * Loads the default values of the config.
 	 */
 	void loadDefaults();
+
+	void save();
 }

@@ -17,6 +17,8 @@ public class Core implements ModInitializer {
 		EndConfig.register( MODID, ConfigData.class );
 		EndConfig.registerChangeListener( MODID, Core::onConfigChanged );
 
+		config();
+
 		LOGGER.info( "Let's get diverse!" );
 		LOGGER.info( "Diversity Core v{}", mod.metadata().version().raw() );
 	}

@@ -18,4 +18,12 @@ public class Const {
 		.printUnquotedKeys( true )
 		.printCommas( true )
 		.build();
+	static final JsonGrammar JSON5 = JsonGrammar.builder()
+		.withComments( true )
+		.printWhitespace( true )
+		.printUnquotedKeys( true )
+		.printCommas( false )
+		.printTrailingCommas( false )
+		.withComments( true )
+		.build();
 }

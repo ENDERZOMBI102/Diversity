@@ -13,9 +13,9 @@ import java.util.function.Function;
 
 import static com.enderzombi102.endconfig.impl.Const.LOGGER;
 import static com.enderzombi102.enderlib.SafeUtils.doSafely;
-import static com.enderzombi102.enderlib.reflection.Types.*;
 import static com.enderzombi102.enderlib.Strings.snakeToPascal;
 import static com.enderzombi102.enderlib.reflection.Annotations.annotation;
+import static com.enderzombi102.enderlib.reflection.Types.*;
 
 @ApiStatus.Internal
 public final class Util {
@@ -133,6 +133,8 @@ public final class Util {
 			if ( (! compact) ) {
 				// translated comments
 				final var key = "endconfig.%s.%s.comment".formatted( modid, path + field.getName() );
+
+				// FIXME: This doesn't work, it is called _before_ translations are loaded from mods
 				if ( Language.getInstance().hasTranslation( key ) )
 					object.setComment( field.getName(), Language.getInstance().get( key ) );
 

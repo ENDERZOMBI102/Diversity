@@ -17,9 +17,6 @@ allprojects {
 	}
 }
 
-def miDependencies = new ArrayList<Dependency>()
-def iDependencies = new ArrayList<Dependency>()
-
 subprojects {
 	apply plugin: 'org.quiltmc.loom'
 
@@ -102,6 +99,15 @@ subprojects {
 	}
 }
 
+loom.runConfigs {
+	client {
+		ideConfigGenerated = true
+	}
+	server {
+		ideConfigGenerated = true
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:$minecraft_version"
 	mappings( loom.layered {
@@ -123,7 +129,7 @@ dependencies {
 	modImplementation( "me.shedaniel.cloth:cloth-config-fabric:$clothconfig_version" ) {
 		transitive false
 	}
-	implementation "com.enderzombi102:EnderLib:$enderlib_version"
+	modImplementation "com.enderzombi102.EnderLib:minecraft:$enderlib_version"
 	implementation "org.jetbrains:annotations:$annotations_version"
 }
 

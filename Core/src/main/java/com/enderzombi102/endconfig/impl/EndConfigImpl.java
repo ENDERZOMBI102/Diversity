@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.enderzombi102.endconfig.impl.Const.*;
-import static com.enderzombi102.enderlib.ListUtil.append;
-import static com.enderzombi102.enderlib.ListUtil.mutableListOf;
+import static com.enderzombi102.enderlib.collections.ListUtil.*;
 
 @ApiStatus.Experimental
 public class EndConfigImpl implements ClientModInitializer {
@@ -31,7 +30,7 @@ public class EndConfigImpl implements ClientModInitializer {
 	static final Map<String, List<ChangeListener<?>>> LISTENERS = new HashMap<>();
 
 	public static <T extends Data> void register( String modid, Path path, Class<T> dataClass ) {
-		LOGGER.info( "Registered new config for `{}` at `{}`", modid, path.relativize( QuiltLoader.getGameDir() ) );
+		LOGGER.info( "Registered new config for `{}` at `{}`", modid, QuiltLoader.getGameDir().relativize( path ) );
 		var holder = new ConfigHolderImpl<>( modid, path, dataClass );
 		CONFIGS.put( modid, holder );
 		// if it's also a listener for itself, add it

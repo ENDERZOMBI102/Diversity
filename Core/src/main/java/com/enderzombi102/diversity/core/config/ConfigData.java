@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.enderzombi102.endconfig.api.ConfigOptions.*;
-import static com.enderzombi102.enderlib.ListUtil.mutableListOf;
+import static com.enderzombi102.enderlib.collections.ListUtil.mutableListOf;
 
 @Sync
 public class ConfigData implements Data, ChangeListener<ConfigData> {

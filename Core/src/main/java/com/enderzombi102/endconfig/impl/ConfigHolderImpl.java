@@ -1,5 +1,6 @@
 package com.enderzombi102.endconfig.impl;
 
+import blue.endless.jankson.JsonGrammar;
 import blue.endless.jankson.JsonObject;
 import blue.endless.jankson.api.SyntaxError;
 import com.enderzombi102.endconfig.api.ConfigHolder;
@@ -15,7 +16,9 @@ import org.quiltmc.qsl.networking.api.PacketByteBufs;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import static com.enderzombi102.endconfig.impl.Const.*;
 import static com.enderzombi102.endconfig.impl.Util.*;
@@ -39,8 +42,9 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 			LOGGER.info( "Loading {}'s config from disk...", this.modid() );
 			this.load();
 		} else {
-			LOGGER.info( "Loading {}'s config from disk...", this.modid() );
+			LOGGER.info( "Creating {}'s config...", this.modid() );
 			this.loadDefaults();
+			this.save();
 		}
 		return this.data;
 	}
@@ -83,6 +87,20 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 		this.data = doSafely( () -> this.dataClass.getConstructor().newInstance() );
 	}
 
+	@Override
+	public void save() {
+		try {
+			Files.writeString(
+				this.path(),
+				doSafely( () -> serialize( data, false, "", this.modid() ).toJson( JSON5 ) ),
+				StandardOpenOption.CREATE
+			);
+			LOGGER.info( "Saved {} to disk!", this.path().getFileName() );
+		} catch ( IOException e ) {
+			LOGGER.error( "Failed to save {}'s config to disk!", this.modid(), e );
+		}
+	}
+
 	// region IMPL DETAIL
 
 	void update( JsonObject obj ) {
@@ -93,7 +111,7 @@ public class ConfigHolderImpl<T extends Data> implements ConfigHolder<T> {
 	public PacketByteBuf packet() {
 		return PacketByteBufs.create()
 			.writeString( this.modid() )
-			.writeString( doSafely( () -> serialize( get(), true, this.modid() ).toJson(MINIFIED) ) );
+			.writeString( doSafely( () -> serialize( get(), true, "", this.modid() ).toJson(MINIFIED) ) );
 	}
 
 	// endregion
