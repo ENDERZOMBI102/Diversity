@@ -9,6 +9,7 @@ import com.google.common.collect.HashBiMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.ApiStatus;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
@@ -24,6 +25,7 @@ import static com.enderzombi102.endconfig.impl.Const.*;
 import static com.enderzombi102.enderlib.ListUtil.append;
 import static com.enderzombi102.enderlib.ListUtil.mutableListOf;
 
+@ApiStatus.Experimental
 public class EndConfigImpl implements ClientModInitializer {
 	static final BiMap<String, ConfigHolder<?>> CONFIGS = HashBiMap.create();
 	static final Map<String, List<ChangeListener<?>>> LISTENERS = new HashMap<>();

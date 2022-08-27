@@ -1,16 +1,24 @@
 package com.enderzombi102.endconfig.impl;
 
-import com.enderzombi102.endconfig.api.ConfigOptions.Name;
+import blue.endless.jankson.JsonElement;
+import blue.endless.jankson.JsonNull;
+import blue.endless.jankson.JsonObject;
+import blue.endless.jankson.JsonPrimitive;
+import com.enderzombi102.endconfig.api.ConfigOptions.*;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.enderzombi102.endconfig.impl.Const.LOGGER;
 import static com.enderzombi102.enderlib.SafeUtils.doSafely;
 import static com.enderzombi102.enderlib.Strings.snakeToPascal;
 
+@ApiStatus.Internal
 public final class Util {
 	private Util() { }
 
@@ -69,5 +77,126 @@ public final class Util {
 				return (Enum<?>) doSafely( () -> field.get(null) );
 
 		throw new IllegalStateException("How did we end here?");
+	}
+
+	public static JsonElement serialize( Object data, boolean compact, String modid ) throws IllegalAccessException {
+		var object = new JsonObject();
+		var globalSyncSetting = annotationOr( data.getClass(), Sync.class, Sync::value,false );
+
+		for ( var field : data.getClass().getFields() ) {
+			// ignore fields marked with @Ignore
+			if ( field.isAnnotationPresent( Ignore.class ) )
+				continue;
+			// if we're not serializing everything
+			if ( compact )
+				// ignore unsyncable elements
+				if ( !annotationOr( field, Sync.class, Sync::value, globalSyncSetting ) )
+					continue;
+			var value = field.get( data );
+
+			// region object to json element
+			JsonElement element;
+			if ( value instanceof String string ) {
+				element = JsonPrimitive.of( string );
+			} else if ( value instanceof Integer integer ) {
+				element = JsonPrimitive.of( integer.longValue() );
+			} else if ( value instanceof Long aLong ) {
+				element = JsonPrimitive.of( aLong );
+			} else if ( value instanceof Double aDouble ) {
+				element = JsonPrimitive.of( aDouble );
+			} else if ( value instanceof Float aFloat ) {
+				element = JsonPrimitive.of( aFloat.doubleValue() );
+			} else if ( value instanceof Boolean aBoolean ) {
+				element = JsonPrimitive.of( aBoolean );
+			} else if ( value instanceof Short aShort ) {
+				element = JsonPrimitive.of( aShort.longValue() );
+			} else if ( value instanceof Byte aByte ) {
+				element = JsonPrimitive.of( aByte.longValue() );
+			} else if ( value instanceof Enum<?> anEnum ) {
+				// it's an enum
+				Function<Enum<?>, String> transform = switch ( annotationOr(
+					field,
+					RenamingPolicy.class,
+					RenamingPolicy::value,
+					"asis"
+				) ) {
+					case "pascal" -> Util::toPascal; // PascalCase
+					case "snake" -> Util::toSnake;   // snake_case
+					case "named" -> Util::named;	 // @Name() value
+					case "asis" -> Util::asIs;	 	 // Enum::Name() value
+					default -> throw new IllegalStateException(
+						"Mod %s has set `RenamingPolicy` on field `%s` to an invalid value `%s`!".formatted(
+							modid,
+							field.getDeclaringClass().getName() + "::" + field.getName(),
+							field.getAnnotation( RenamingPolicy.class ).value()
+						)
+					);
+				};
+
+				element = JsonPrimitive.of( transform.apply( anEnum ) );
+			} else if ( value == null ) {
+				element = JsonNull.INSTANCE;
+			} else {
+				// it's another object
+				element = serialize( value, compact, modid );
+			}
+			// endregion
+
+			object.put( field.getName(), element );
+		}
+
+		return object;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void deserialize( Object dest, JsonObject obj, String modid ) {
+		for ( var field : dest.getClass().getDeclaredFields() )
+			if ( obj.containsKey( field.getName() ) ) {
+				try {
+					if ( field.getType().equals( String.class ) ) {
+						field.set( dest, obj.get( String.class, field.getName() ) );
+					} else if ( INTEGER.contains( field.getType() ) ) {
+						field.set( dest, obj.getInt( field.getName(), field.getInt( dest ) ) );
+					} else if ( LONG.contains( field.getType() ) ) {
+						field.set( dest, obj.getLong( field.getName(), field.getLong( dest ) ) );
+					} else if ( DOUBLE.contains( field.getType() ) ) {
+						field.set( dest, obj.getDouble( field.getName(), field.getDouble( dest ) ) );
+					} else if ( FLOAT.contains( field.getType() ) ) {
+						field.set( dest, obj.getFloat( field.getName(), field.getFloat( dest ) ) );
+					} else if ( BOOLEAN.contains( field.getType() ) ) {
+						field.set( dest, obj.getBoolean( field.getName(), field.getBoolean( dest ) ) );
+					} else if ( SHORT.contains( field.getType() ) ) {
+						field.set( dest, obj.getShort( field.getName(), field.getShort( dest ) ) );
+					} else if ( BYTE.contains( field.getType() ) ) {
+						field.set( dest, obj.getByte( field.getName(), field.getByte( dest ) ) );
+					} else if ( field.getType().isEnum() ) {
+						// it's an enum
+						BiFunction< String, Class< Enum<?> >, Enum<?> > transform = switch ( annotationOr(
+							field,
+							RenamingPolicy.class,
+							RenamingPolicy::value,
+							"asis"
+						) ) {
+							case "pascal" -> Util::fromPascal; // PascalCase
+							case "snake" -> Util::fromSnake;   // snake_case
+							case "named" -> Util::named;	 // @Name() value
+							case "asis" -> Util::asIs;	 	 // Enum::Name() value
+							default -> throw new IllegalStateException(
+								"Mod %s has set `RenamingPolicy` on field `%s` to an invalid value `%s`!".formatted(
+									modid,
+									field.getDeclaringClass().getName() + "::" + field.getName(),
+									field.getAnnotation( RenamingPolicy.class ).value()
+								)
+							);
+						};
+						field.set( dest, transform.apply( obj.get( String.class, field.getName() ), (Class<Enum<?>>) field.getType() ) );
+					} else {
+						// it's another object
+						deserialize( field.get( dest ), obj.getObject( field.getName() ), modid );
+					}
+				} catch ( IllegalAccessException e ) {
+					LOGGER.error( "Failed to deserialize {}'s config sent from the server...", modid, e );
+				}
+			}
 	}
 }

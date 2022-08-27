@@ -6,8 +6,10 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Language;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
+@ApiStatus.Experimental
 public class ConfigScreen extends SpruceScreen {
 	private final ConfigHolder<?> holder;
 	private final @Nullable Screen parent;

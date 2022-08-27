@@ -36,8 +36,12 @@ public interface ConfigHolder<T extends Data> {
 	Screen screen( Screen parent );
 
 	/**
-	 * Resets this config.
-	 * @param toDefault if reset to defaults.
+	 * Loads the last saved state of the config.
 	 */
-	void reset( boolean toDefault );
+	void load();
+
+	/**
+	 * Loads the default values of the config.
+	 */
+	void loadDefaults();
 }
