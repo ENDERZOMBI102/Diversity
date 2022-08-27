@@ -32,6 +32,7 @@ public class ConfigData implements Data, ChangeListener<ConfigData> {
 	public int notSynced = 199;
 
 	@Tooltip
+	@Comment( "Comment made from code!" )
 	public List<String> data = mutableListOf( "Hello", "world", "!" );
 
 	@Ignore

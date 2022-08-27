@@ -77,4 +77,13 @@ public @interface ConfigOptions {
 	@Target( ElementType.FIELD )
 	@Retention( RetentionPolicy.RUNTIME )
 	@interface Ignore { }
+
+	/**
+	 * Will be used as comment in the config file.
+	 */
+	@Target( ElementType.FIELD )
+	@Retention( RetentionPolicy.RUNTIME )
+	@interface Comment {
+		String value();
+	}
 }

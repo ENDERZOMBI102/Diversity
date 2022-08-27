@@ -10,6 +10,7 @@
 		"enumValue3.title": "Camel enum value name",
 		"value": {
 			"title": "Ranged integer",
+			"comment": "Commend made from translations",
 			"tooltip": "This is a ranged value",
 			"tooltip@1": "going from 0 to 100 inclusive"
 		}

@@ -5,34 +5,21 @@ import blue.endless.jankson.JsonNull;
 import blue.endless.jankson.JsonObject;
 import blue.endless.jankson.JsonPrimitive;
 import com.enderzombi102.endconfig.api.ConfigOptions.*;
+import net.minecraft.util.Language;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.util.List;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.enderzombi102.endconfig.impl.Const.LOGGER;
 import static com.enderzombi102.enderlib.SafeUtils.doSafely;
+import static com.enderzombi102.enderlib.reflection.Types.*;
 import static com.enderzombi102.enderlib.Strings.snakeToPascal;
+import static com.enderzombi102.enderlib.reflection.Annotations.annotation;
 
 @ApiStatus.Internal
 public final class Util {
 	private Util() { }
-
-	public static final List<Class<?>> BYTE = List.of( Byte.class, byte.class );
-	public static final List<Class<?>> SHORT = List.of( Short.class, short.class );
-	public static final List<Class<?>> INTEGER = List.of( Integer.class, int.class );
-	public static final List<Class<?>> LONG = List.of( Long.class, long.class );
-	public static final List<Class<?>> FLOAT = List.of( Float.class, float.class );
-	public static final List<Class<?>> DOUBLE = List.of( Double.class, double.class );
-	public static final List<Class<?>> BOOLEAN = List.of( Boolean.class, boolean.class );
-
-	public static <T, A extends Annotation> T annotationOr( AnnotatedElement obj, Class<A> annotation, Function<A, T> getter, T fallback ) {
-		return Optional.ofNullable( obj.getAnnotation( annotation ) ).map( getter ).orElse( fallback );
-	}
 
 	public static String asIs( Enum<?> anEnum ) {
 		return anEnum.name();
@@ -61,7 +48,7 @@ public final class Util {
 
 	public static Enum<?> named( String value, Class<Enum<?>> enumClass ) {
 		for ( var field : enumClass.getFields() )
-			if ( field.isEnumConstant() && annotationOr( field, Name.class, Name::value, "" ).equals( value ) )
+			if ( field.isEnumConstant() && annotation( field, Name.class, Name::value, "" ).equals( value ) )
 				return (Enum<?>) doSafely( () -> field.get(null) );
 
 		throw new IllegalStateException("How did we end here?");
@@ -79,9 +66,9 @@ public final class Util {
 		throw new IllegalStateException("How did we end here?");
 	}
 
-	public static JsonElement serialize( Object data, boolean compact, String modid ) throws IllegalAccessException {
+	public static JsonElement serialize( Object data, boolean compact, String path, String modid ) throws IllegalAccessException {
 		var object = new JsonObject();
-		var globalSyncSetting = annotationOr( data.getClass(), Sync.class, Sync::value,false );
+		var globalSyncSetting = annotation( data.getClass(), Sync.class, Sync::value,false );
 
 		for ( var field : data.getClass().getFields() ) {
 			// ignore fields marked with @Ignore
@@ -90,7 +77,7 @@ public final class Util {
 			// if we're not serializing everything
 			if ( compact )
 				// ignore unsyncable elements
-				if ( !annotationOr( field, Sync.class, Sync::value, globalSyncSetting ) )
+				if ( !annotation( field, Sync.class, Sync::value, globalSyncSetting ) )
 					continue;
 			var value = field.get( data );
 
@@ -114,7 +101,7 @@ public final class Util {
 				element = JsonPrimitive.of( aByte.longValue() );
 			} else if ( value instanceof Enum<?> anEnum ) {
 				// it's an enum
-				Function<Enum<?>, String> transform = switch ( annotationOr(
+				Function<Enum<?>, String> transform = switch ( annotation(
 					field,
 					RenamingPolicy.class,
 					RenamingPolicy::value,
@@ -138,11 +125,22 @@ public final class Util {
 				element = JsonNull.INSTANCE;
 			} else {
 				// it's another object
-				element = serialize( value, compact, modid );
+				element = serialize( value, compact, "%s.%s".formatted( path, field.getName() ), modid );
 			}
 			// endregion
 
 			object.put( field.getName(), element );
+			if ( (! compact) ) {
+				// translated comments
+				final var key = "endconfig.%s.%s.comment".formatted( modid, path + field.getName() );
+				if ( Language.getInstance().hasTranslation( key ) )
+					object.setComment( field.getName(), Language.getInstance().get( key ) );
+
+				// code-driven comments
+				final var comment = annotation( field, Comment.class, Comment::value );
+				if ( comment != null )
+					object.setComment( field.getName(), comment );
+			}
 		}
 
 		return object;
@@ -171,7 +169,7 @@ public final class Util {
 						field.set( dest, obj.getByte( field.getName(), field.getByte( dest ) ) );
 					} else if ( field.getType().isEnum() ) {
 						// it's an enum
-						BiFunction< String, Class< Enum<?> >, Enum<?> > transform = switch ( annotationOr(
+						BiFunction< String, Class< Enum<?> >, Enum<?> > transform = switch ( annotation(
 							field,
 							RenamingPolicy.class,
 							RenamingPolicy::value,
