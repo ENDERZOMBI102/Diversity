@@ -56,8 +56,7 @@
 		"environment": "*"
 	},
 	"mixin": [
-		"diversity-core.mixins.json",
-		"endconfig.mixins.json"
+		"diversity-core.mixins.json"
 	],
 	"modmenu": {
 		"parent": {
