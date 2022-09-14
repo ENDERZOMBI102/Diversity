@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+enableFeaturePreview("VERSION_CATALOGS")
 pluginManagement {
 	repositories {
 		mavenCentral()
@@ -8,7 +10,7 @@ pluginManagement {
 		maven( url="https://server.bbkr.space/artifactory/libs-release" )
 	}
 }
-rootProject.name =( "Diversity" )
+rootProject.name = "Diversity"
 include( "Flora" )
 include( "Core" )
 

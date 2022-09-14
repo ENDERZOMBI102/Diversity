@@ -1,4 +1,0 @@
-dependencies {
-	implementation include( 'blue.endless:jankson:1.2.1' )
-	modImplementation include( "dev.lambdaurora:spruceui:$spruceui_version" )
-}
