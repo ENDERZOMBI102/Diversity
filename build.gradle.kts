@@ -1,5 +1,4 @@
 @file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
-
 import net.fabricmc.loom.api.mappings.layered.spec.LayeredMappingSpecBuilder
 
 plugins {
@@ -14,9 +13,10 @@ fun bundle( proj: String, bundleName: String ) =
 /** Utility function that retrieves a version from the version catalog. */
 fun version( name: String ) = libs.findVersion( name ).get().displayName
 
-/** Basically to make the mappings an oneliner. */
 fun LayeredMappingSpecBuilder.quilt( minecraft: String, mappings: String ) =
 	addLayer( quiltMappings.mappings( "org.quiltmc:quilt-mappings:$minecraft+build.$mappings:v2" ) )
+
+operator fun File.div(path: String ) = this.resolve( path )
 
 allprojects {
 	apply( plugin="org.quiltmc.loom" )
@@ -47,15 +47,14 @@ subprojects {
 		modCompileOnlyApi( bundle( "common", "mod.compileapi" ) )
 		modImplementation( bundle( "common", "mod.implementation" ) )
 
-		// Project-specific dependencies
+		// Module-specific dependencies
 		include( bundle( name, "include" ) )
 		implementation( bundle( name, "implementation" ) )
 		modImplementation( bundle( name, "mod.implementation" ) )
 		modCompileOnlyApi( bundle( name, "mod.compileapi" ) )
 
-		if ( name != "Core" ) {
+		if ( name != "Core" )
 			compileOnly( project( ":Core", "namedElements" ) )
-		}
 	}
 
 	tasks.withType<ProcessResources>().configureEach {
@@ -81,22 +80,13 @@ subprojects {
 	}
 
 	java {
-		toolchain {
-			languageVersion.set( JavaLanguageVersion.of( 17 ) )
-		}
+		toolchain.languageVersion.set( JavaLanguageVersion.of( 17 ) )
 		withSourcesJar()
 	}
 
 	tasks.withType<AbstractArchiveTask>().configureEach {
 		archiveBaseName.set( project.name.toLowerCase() )
-		destinationDirectory.set(
-			rootProject.buildDir.resolve(
-				when ( archiveClassifier.get() ) {
-					"dev", "sources" -> "devlibs"
-					else -> "libs"
-				}
-			)
-		)
+		destinationDirectory.set( rootProject.buildDir / ( if ( archiveClassifier.get() in listOf( "dev", "sources" ) ) "devlibs" else "libs" ) )
 	}
 
 	tasks.withType<Jar>().configureEach {
@@ -123,9 +113,6 @@ tasks.withType<ProcessResources>().configureEach {
 	filteringCharset = "UTF-8"
 
 	filesMatching("quilt.mod.json") {
-		expand(
-			Pair( "version", version ),
-			Pair( "group", "com.enderzombi102" )
-		)
+		expand( Pair( "version", version ), Pair( "group", "com.enderzombi102" ) )
 	}
 }
