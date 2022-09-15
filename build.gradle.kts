@@ -1,18 +1,27 @@
 @file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
 
 import net.fabricmc.loom.api.mappings.layered.spec.LayeredMappingSpecBuilder
-import net.fabricmc.loom.task.RemapSourcesJarTask
 
 plugins {
-	id("org.quiltmc.loom").version( "0.12.+" )
+	id("org.quiltmc.loom") version "0.12.+"
 	java
 }
 
-val group: String by project
-val version: String by project
-val archivesBaseName: String by project
+/** Utility function that retrieves a bundle from the version catalog. */
+fun bundle( proj: String, bundleName: String ) =
+	libs.findBundle( "${proj.toLowerCase()}.$bundleName" ).get()
+
+/** Utility function that retrieves a version from the version catalog. */
+fun version( name: String ) = libs.findVersion( name ).get().displayName
+
+/** Basically to make the mappings an oneliner. */
+fun LayeredMappingSpecBuilder.quilt( minecraft: String, mappings: String ) =
+	addLayer( quiltMappings.mappings( "org.quiltmc:quilt-mappings:$minecraft+build.$mappings:v2" ) )
 
 allprojects {
+	apply( plugin="org.quiltmc.loom" )
+	loom.shareRemapCaches.set( true )
+
 	repositories {
 		mavenCentral()
 		maven( "https://jitpack.io" )
@@ -24,36 +33,15 @@ allprojects {
 		maven( "https://maven.quiltmc.org/repository/release" )
 		maven( "https://maven.quiltmc.org/repository/snapshot" )
 	}
-}
-
-/**
- * Utility function that retrieves a bundle from the version catalog
- */
-fun bundle( proj: String, bundleName: String ) =
-	libs.findBundle( "${proj.toLowerCase()}.$bundleName" ).get()
-
-/**
- * Utility function that retrieves a version from the version catalog
- */
-fun version( name: String ) = libs.findVersion( name ).get().displayName
-
-/**
- * Basically to make the mappings an oneliner.
- */
-fun LayeredMappingSpecBuilder.quilt( minecraftVersion: String, mappingsVersion: String ) =
-	addLayer( quiltMappings.mappings( "org.quiltmc:quilt-mappings:$minecraftVersion+build.$mappingsVersion:v2" ) )
-
-subprojects {
-	apply( plugin="org.quiltmc.loom" )
-
-	loom.shareRemapCaches.set( true )
-	loom.runConfigs["client"].runDir = "../run"
-	loom.runConfigs["server"].runDir = "../run"
 
 	dependencies {
 		minecraft( "com.mojang:minecraft:${version("minecraft")}" )
 		mappings( loom.layered { quilt( version("minecraft"), version("mappings") ) } )
+	}
+}
 
+subprojects {
+	dependencies {
 		// Common dependencies
 		implementation( bundle( "common", "implementation" ) )
 		modCompileOnlyApi( bundle( "common", "mod.compileapi" ) )
@@ -104,8 +92,7 @@ subprojects {
 		destinationDirectory.set(
 			rootProject.buildDir.resolve(
 				when ( archiveClassifier.get() ) {
-					"dev" -> "devlibs"
-					"sources" -> if ( this is RemapSourcesJarTask ) "libs" else "devlibs"
+					"dev", "sources" -> "devlibs"
 					else -> "libs"
 				}
 			)
@@ -114,27 +101,21 @@ subprojects {
 
 	tasks.withType<Jar>().configureEach {
 		from( "LICENSE" ) {
-			rename { "${it}_$archivesBaseName" }
+			rename { "${it}_${project.ext["archivesBaseName"]}" }
 		}
 	}
-}
 
-loom.shareRemapCaches.set( true )
-loom.runConfigs["client"].isIdeConfigGenerated = true
-loom.runConfigs["server"].isIdeConfigGenerated = true
-
-dependencies {
-	minecraft( "com.mojang:minecraft:${version("minecraft")}" )
-	mappings( loom.layered { quilt( version("minecraft"), version("mappings") ) } )
-	runtimeOnly( include( project( path=":Core", configuration="namedElements" ) )!! )
-	runtimeOnly( include( project( path=":Flora", configuration="namedElements" ) )!! )
-
-	for ( proj in subprojects ) {
-		runtimeOnly( bundle( proj.name, "implementation" ) )
-		modRuntimeOnly( bundle( proj.name, "mod.implementation" ) )
-		modRuntimeOnly( bundle( proj.name, "mod.compileapi" ) )
+	rootProject.dependencies {
+		runtimeOnly( include( project( path=path, configuration="namedElements" ) )!! )
+		// add this module's dependencies to the runtime classpath
+		runtimeOnly( bundle( name, "implementation" ) )
+		modRuntimeOnly( bundle( name, "mod.implementation" ) )
+		modRuntimeOnly( bundle( name, "mod.compileapi" ) )
 	}
 }
+
+loom.runConfigs["client"].isIdeConfigGenerated = true
+loom.runConfigs["server"].isIdeConfigGenerated = true
 
 tasks.withType<ProcessResources>().configureEach {
 	inputs.property( "version", version )
