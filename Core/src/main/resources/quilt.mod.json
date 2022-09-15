@@ -34,10 +34,6 @@
 			{
 				"id": "java",
 				"versions": ">=17"
-			},
-			{
-				"id": "cloth-config2",
-				"versions": ">=${cc_version}"
 			}
 		],
 		"entrypoints": {
