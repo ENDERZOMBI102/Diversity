@@ -1,7 +1,6 @@
 package com.enderzombi102.diversity.flora;
 
 import com.enderzombi102.diversity.flora.registry.*;
-import com.hugman.dawn.api.object.ModData;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.LogManager;

@@ -11,6 +11,5 @@ public class FloraClient implements ClientModInitializer {
 		BiomeRegistry.registerClient();
 //		ColorRegistry.registerClient();
 		EventListeners.registerClient();
-		Flora.DATA.registerCreatorsClient();
 	}
 }

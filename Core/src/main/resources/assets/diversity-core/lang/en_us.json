@@ -1,0 +1,18 @@
+{
+	"endconfig.diversity-core": {
+		"title": "Diversity: Core",
+		"test": {
+			"title": "Dropdown",
+			"tooltip": "String with limited possibilities"
+		},
+		"enumValue.title": "Custom enum value name",
+		"enumValue2.title": "Named enum value name",
+		"enumValue3.title": "Camel enum value name",
+		"value": {
+			"title": "Ranged integer",
+			"comment": "Commend made from translations",
+			"tooltip": "This is a ranged value",
+			"tooltip@1": "going from 0 to 100 inclusive"
+		}
+	}
+}

@@ -34,22 +34,26 @@
 			{
 				"id": "java",
 				"versions": ">=17"
-			},
-			{
-				"id": "cloth-config2",
-				"versions": ">=${cc_version}"
 			}
 		],
 		"entrypoints": {
 			"init": [
 				"com.enderzombi102.diversity.core.Core"
+			],
+			"client_init": [
+				"com.enderzombi102.endconfig.impl.EndConfigImpl"
+			],
+			"modmenu": [
+				"com.enderzombi102.diversity.core.ModmenuCompat"
 			]
 		}
 	},
 	"minecraft": {
 		"environment": "*"
 	},
-	"mixin": "diversity-core.mixins.json",
+	"mixin": [
+		"diversity-core.mixins.json"
+	],
 	"modmenu": {
 		"parent": {
 			"id": "diversity",
