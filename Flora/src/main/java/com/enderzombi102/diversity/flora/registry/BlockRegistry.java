@@ -1,6 +1,6 @@
 package com.enderzombi102.diversity.flora.registry;
 
-import com.enderzombi102.diversity.flora.block.Cataplant;
+import com.enderzombi102.diversity.flora.block.CataplantBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
@@ -26,7 +26,7 @@ public class BlockRegistry {
 					.sounds( BlockSoundGroup.GLASS )
 			)
 		);
-		put( "cataplant", new Cataplant() );
+		put( "cataplant", new CataplantBlock() );
 	}};
 
 	public static void register() {

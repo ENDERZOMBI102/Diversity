@@ -9,7 +9,6 @@ public final class Const {
 	public static final String ID = "diversity-flora";
 	public static final String NAME;
 	public static final String VERSION;
-	public static final Identifier CONFIG_SYNC_ID;
 
 	public static Identifier getId( String path ) {
 		return new Identifier(ID, path );
@@ -19,6 +18,5 @@ public final class Const {
 		final var meta = QuiltLoader.getModContainer(ID).orElseThrow().metadata();
 		NAME = meta.name();
 		VERSION = meta.version().raw();
-		CONFIG_SYNC_ID = getId( "config_sync" );
 	}
 }

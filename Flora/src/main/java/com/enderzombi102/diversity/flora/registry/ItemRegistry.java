@@ -20,13 +20,8 @@ public final class ItemRegistry {
 	}};
 
 	public static void register() {
-		for ( Map.Entry<String, Item> item : ITEMS.entrySet() ) {
-			Registry.register(
-				Registry.ITEM,
-				getId( item.getKey() ),
-				item.getValue()
-			);
-		}
+		for ( Map.Entry<String, Item> item : ITEMS.entrySet() )
+			Registry.register( Registry.ITEM, getId( item.getKey() ), item.getValue() );
 	}
 
 	public static Item get(String itemId) {

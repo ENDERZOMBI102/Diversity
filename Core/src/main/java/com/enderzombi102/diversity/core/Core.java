@@ -3,13 +3,13 @@ package com.enderzombi102.diversity.core;
 import com.enderzombi102.diversity.core.config.ConfigData;
 import com.enderzombi102.endconfig.api.ConfigHolder;
 import com.enderzombi102.endconfig.api.EndConfig;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Core implements ModInitializer {
-	public static final Logger LOGGER = LogManager.getLogger("Diversity | Core");
+	public static final Logger LOGGER = LoggerFactory.getLogger("Diversity | Core");
 	static final String MODID = "diversity-core";
 
 	@Override

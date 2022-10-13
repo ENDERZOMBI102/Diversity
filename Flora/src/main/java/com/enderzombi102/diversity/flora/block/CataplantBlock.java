@@ -1,6 +1,6 @@
 package com.enderzombi102.diversity.flora.block;
 
-import com.enderzombi102.diversity.flora.config.ConfigManager;
+import com.enderzombi102.diversity.flora.config.Config;
 import com.enderzombi102.diversity.flora.registry.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -23,11 +23,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Cataplant extends PlantBlock {
+@SuppressWarnings("deprecation")
+public class CataplantBlock extends PlantBlock {
 	private static final VoxelShape SHAPE = createCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 13.0D, 14.0D);
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
-	public Cataplant() {
+	public CataplantBlock() {
 		super( settings -> settings.offsetType( OffsetType.XZ ) );
 		setDefaultState( stateManager.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH) );
 	}
@@ -70,13 +71,11 @@ public class Cataplant extends PlantBlock {
 			1,
 			false
 		);
-		Direction face = state.get(FACING);
-		int x = face.getVector().getX();
-		int z = face.getVector().getZ();
+		var face = state.get(FACING);
 		entity.addVelocity(
-			x * ConfigManager.getActiveConfig().plants.cataplant.power,
-			0.08 * ConfigManager.getActiveConfig().plants.cataplant.power,
-			z * ConfigManager.getActiveConfig().plants.cataplant.power
+			face.getVector().getX() * Config.get().cataplantPower,
+			0.08 * Config.get().cataplantPower,
+			face.getVector().getZ() * Config.get().cataplantPower
 		);
 		entity.velocityDirty = true;
 	}
