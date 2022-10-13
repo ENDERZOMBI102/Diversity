@@ -21,6 +21,7 @@ operator fun File.div(path: String ) = this.resolve( path )
 allprojects {
 	apply( plugin="org.quiltmc.loom" )
 	loom.shareRemapCaches.set( true )
+	loom.runtimeOnlyLog4j.set( true )
 
 	repositories {
 		mavenCentral()
@@ -96,11 +97,11 @@ subprojects {
 	}
 
 	rootProject.dependencies {
-		runtimeOnly( include( project( path=path, configuration="namedElements" ) )!! )
+		include( implementation( project( path=path, configuration="namedElements" ) )!! )
 		// add this module's dependencies to the runtime classpath
-		runtimeOnly( bundle( name, "implementation" ) )
-		modRuntimeOnly( bundle( name, "mod.implementation" ) )
-		modRuntimeOnly( bundle( name, "mod.compileapi" ) )
+		implementation( bundle( name, "implementation" ) )
+		modImplementation( bundle( name, "mod.implementation" ) )
+		modImplementation( bundle( name, "mod.compileapi" ) )
 	}
 }
 

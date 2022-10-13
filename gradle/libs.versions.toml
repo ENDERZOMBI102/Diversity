@@ -1,7 +1,7 @@
 [versions]
 	# Loader dependencies
 	minecraft = '1.19.2'
-	mappings = '1.19.2+build.3'
+	mappings = '3'
 	loader = '0.17.1'
 	qfapi = '4.0.0-beta.7+0.59.0-1.19.2'
 	# Diversity dependnecies
@@ -46,4 +46,4 @@
 	flora_implementation = [ ]
 	flora_include = [ ]
 	flora_mod_compileapi = [ ]
-	flora_mod_implementation = [ 'clothconfig' ]
+	flora_mod_implementation = [ 'endconfig' ]
