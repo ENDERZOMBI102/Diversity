@@ -2,6 +2,7 @@ package com.enderzombi102.diversity.core
 
 import com.enderzombi102.diversity.core.config.ConfigData
 import com.enderzombi102.diversity.core.module.DiversityModules
+import com.enderzombi102.diversity.core.registry.Registries
 import com.enderzombi102.endconfig.api.ConfigHolder
 import com.enderzombi102.endconfig.api.EndConfig
 import org.quiltmc.loader.api.ModContainer
@@ -17,14 +18,21 @@ class Core : ModInitializer {
 
 		saveConfig()
 
+		for ( module in DiversityModules.modules() ) {
+			currentId = module.container.metadata().id()
+			module.main?.instance?.onInitialize( module.container )
+		}
+		currentId = null
+
+		Registries.register()
+
 		LOGGER.info("Let's get diverse!")
 		LOGGER.info("Diversity Core v{}", mod.metadata().version().raw() )
-
-		for ( module in DiversityModules.modules() )
-			module.main?.instance?.onInitialize( module.container )
 	}
 
 	companion object {
+		var currentId: String? = null
+
 		@JvmStatic
 		val LOGGER = LoggerFactory.getLogger("Diversity | Core")!!
 		const val MODID = "diversity-core"

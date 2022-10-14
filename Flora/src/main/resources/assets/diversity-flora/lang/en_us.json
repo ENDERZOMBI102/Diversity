@@ -2,7 +2,7 @@
 	"itemGroup.diversity-flora.tab": "Diversity: Flora",
 
 	"biome.diversity-flora.crystal_forest": "Crystal Forest",
-
+	// FIXME: Somehow this broke lmao
 	"block.diversity-flora": {
 		"crystal_ground": "Crystal Ground",
 		"cataplant": "Cataplant"
