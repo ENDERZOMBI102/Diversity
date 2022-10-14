@@ -33,17 +33,17 @@
 [bundles]
 	# Dependencies common to all projects
 	common_implementation = [ 'annotations' ]
-	common_mod_implementation = [ 'loader', 'qfapi', 'enderlib',  ]
+	common_mod_implementation = [ 'loader', 'qfapi', 'enderlib','endconfig' ]
 	common_mod_compileapi = [ 'modmenu' ]
 
 	# :Core dependencies
 	core_implementation = [ 'jankson' ]
-	core_include = [ 'jankson', 'spruceui', 'endconfig' ]
+	core_include = [ 'jankson', 'endconfig' ]
 	core_mod_compileapi = [ ]
-	core_mod_implementation = [ 'spruceui', 'endconfig' ]
+	core_mod_implementation = [ ]
 
 	# :Flora dependencies
 	flora_implementation = [ ]
 	flora_include = [ ]
 	flora_mod_compileapi = [ ]
-	flora_mod_implementation = [ 'endconfig' ]
+	flora_mod_implementation = [ ]
