@@ -18,7 +18,7 @@
 			"license": "MIT",
 			"icon": "assets/diversity-core/icon.png"
 		},
-		"depends": [ // ${dependencies}
+		"depends": [ /// ${dependencies}
 		],
 		"entrypoints": {
 			"init": [ "com.enderzombi102.diversity.core.Core" ],

@@ -18,7 +18,7 @@
 			"license": "MIT",
 			"icon": "assets/diversity-flora/flora.png"
 		},
-		"depends": [ //${dependencies}
+		"depends": [ /// ${dependencies}
 		]
 	},
 	"mixin": "diversity-flora.mixins.json",

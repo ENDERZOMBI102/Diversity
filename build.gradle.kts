@@ -39,6 +39,10 @@ allprojects {
 	dependencies {
 		minecraft( "com.mojang:minecraft:${version("minecraft")}" )
 		mappings( loom.layered { quilt( version("minecraft"), version("mappings") ) } )
+
+		implementation( bundle( "common", "implementation" ) )
+		modImplementation( bundle( "common", "mod.compileapi" ) )
+		modImplementation( bundle( "common", "mod.implementation" ) )
 	}
 }
 
@@ -69,15 +73,16 @@ subprojects {
 
 		filesMatching( "quilt.mod.json" ) {
 			expand(
-				Pair( "version"     , version ),
-				Pair( "group"       , "com.enderzombi102.diversity" ),
-				Pair( "dependencies", """ this is a hack comment
+				"version"      to version,
+				"group"        to "com.enderzombi102.diversity",
+				"dependencies" to """
 				{ "id": "quilt_loader", "versions": "${version("loader")}" },
 				{ "id": "quilt_base", "versions": "*" },
 				{ "id": "minecraft", "versions": ">=${version("minecraft")}" },
 				{ "id": "java", "versions": ">=17" }${ if ( project == core ) "" else """,
-				{ "id": "diversity-core", "versions": "${core.version}" }""".trimIndent() }""".trimIndent() )
+				{ "id": "diversity-core", "versions": "${core.version}" }""".trimIndent() }""".trimIndent()
 			)
+			filter { it.substringBefore("///") }
 		}
 	}
 
@@ -119,6 +124,6 @@ tasks.withType<ProcessResources> {
 	filteringCharset = "UTF-8"
 
 	filesMatching("quilt.mod.json") {
-		expand( Pair( "version", version ), Pair( "group", "com.enderzombi102" ) )
+		expand( "version" to version, "group" to "com.enderzombi102" )
 	}
 }
