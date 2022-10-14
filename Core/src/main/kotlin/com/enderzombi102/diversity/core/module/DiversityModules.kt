@@ -19,9 +19,7 @@ object DiversityModules {
 
 	@JvmStatic
 	fun getModule(name: String): ModuleData {
-		require(MODULES.containsKey(name)) {
-			"No module called `$name` is installed! why has it been requested?"
-		}
+		require(MODULES.containsKey(name)) { "No module called `$name` is installed! why has it been requested?" }
 		return MODULES[name]!!
 	}
 
@@ -47,12 +45,14 @@ object DiversityModules {
 		val objects = QuiltLoader.getAllMods()
 			.stream()
 			.filter { it.metadata().let { meta -> "diversity" in meta || meta.group().startsWith("com.enderzombi102.diversity") } }
-			.map { Pair( it, it.metadata() ) }
-			.map { Pair( it.first, it.second.value("diversity")?.asObject() ?: emptyMap() ) }
+			.map { it to it.metadata() }
+			.map { it.first to ( it.second.value("diversity")?.asObject() ?: emptyMap() ) }
 			.toList()
 
 		for (entry in objects) {
 			val name = entry.second["name"]?.asString() ?: entry.first.metadata().id().substringAfter("-")
+			if ( name == "core" )
+				continue
 			val main = entry.second["main"]?.asString() ?: "com.enderzombi102.diversity.$name.${ name.replaceFirstChar { it.uppercase() } }"
 			val client = entry.second["client"]?.asString() ?: "${main}Client"
 
@@ -81,11 +81,7 @@ object DiversityModules {
 
 	private fun findPaths( clazz: Class<*>, container: ModContainer ) = buildList {
 		val sources = toPath( clazz.protectionDomain.codeSource.location )
-		append(
-			this,
-			sources,
-			container.getPath("assets").parent
-		)
+		append( this, sources, container.getPath("assets").parent )
 		val kotlin = sources.parent.parent.resolve("kotlin/main")
 		if ( kotlin.toFile().exists() )
 			add( kotlin )
