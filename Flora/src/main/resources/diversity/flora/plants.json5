@@ -1,0 +1,407 @@
+{
+	abeliophyllum_d: {
+		flower: false,
+		color: "WHITE"
+	},
+	abroma_a: {
+		flower: true,
+		color: "RED"
+	},
+	abutilon_i: {
+		flower: true,
+		color: "WHITE"
+	},
+	acaena_s: {
+		flower: true,
+		color: "ORANGE"
+	},
+	acalypha_a: {
+		flower: true,
+		color: "PINK"
+	},
+	acalypha_r: {
+		flower: false,
+		color: "RED"
+	},
+	acantholimon_g: {
+		flower: true,
+		color: "MAGENTA"
+	},
+	achillea: {
+		flower: true,
+		color: "RED"
+	},
+	achimenes_e: {
+		flower: true,
+		color: "RED"
+	},
+	acinos_a: {
+		flower: true,
+		color: "PURPLE"
+	},
+	aciphylla_g: {
+		flower: true,
+		color: "LIGHT_GRAY"
+	},
+	adenophora_t: {
+		flower: true,
+		color: "MAGENTA"
+	},
+	adonis_a: {
+		flower: true,
+		color: "ORANGE"
+	},
+	aechmea_a: {
+		flower: true,
+		color: "RED"
+	},
+	aeschynanthus_s: {
+		flower: true,
+		color: "RED"
+	},
+	aethionema_s: {
+		flower: true,
+		color: "PINK"
+	},
+	agapanthus_a: {
+		flower: true,
+		color: "BLUE"
+	},
+	ageratum_c: {
+		flower: true,
+		color: "LIGHT_GRAY"
+	},
+	agrostemma_g: {
+		flower: true,
+		color: "MAGENTA"
+	},
+	aira_c: {
+		flower: true,
+		color: "LIGHT_GRAY"
+	},
+	ajuga_a: {
+		flower: true,
+		color: "PURPLE"
+	},
+	albuca_f: {
+		flower: true,
+		color: "GREEN"
+	},
+	alcea_b: {
+		flower: true,
+		color: "BROWN"
+	},
+	alkanna_t: {
+		flower: true,
+		color: "BLUE"
+	},
+	alliaria_p: {
+		flower: true,
+		color: "WHITE"
+	},
+	allium_c: {
+		flower: true,
+		color: "PURPLE"
+	},
+	aloe_b: {
+		flower: false,
+		color: "ORANGE"
+	},
+	alopecurus_g: {
+		flower: false,
+		color: "YELLOW"
+	},
+	alsobia_d: {
+		flower: false,
+		color: "WHITE"
+	},
+	alstroemeria_p: {
+		flower: true,
+		color: "RED"
+	},
+	alyogyne_h: {
+		flower: true,
+		color: "RED"
+	},
+	amaryllis_b: {
+		flower: true,
+		color: "PINK"
+	},
+	ambrosia_t: {
+		flower: true,
+		color: "YELLOW"
+	},
+	amesiella_p: {
+		flower: true,
+		color: "WHITE"
+	},
+	ammobium_a: {
+		flower: true,
+		color: "WHITE"
+	},
+	amphipappus: {
+		flower: true,
+		color: "YELLOW"
+	},
+	anacyclus_v: {
+		flower: true,
+		color: "YELLOW"
+	},
+	anagallis_a: {
+		flower: true,
+		color: "ORANGE"
+	},
+	anchusa_a: {
+		flower: true,
+		color: "BLUE"
+	},
+	argocoffeeopsis_l: {
+		flower: true,
+		color: "PINK"
+	},
+	asclepias_s: {
+		flower: true,
+		color: "MAGENTA"
+	},
+	asclepias_t: {
+		flower: true,
+		color: "ORANGE"
+	},
+	aspalathus_v: {
+		flower: true,
+		color: "YELLOW"
+	},
+	astilbe_c: {
+		flower: false,
+		color: "PINK"
+	},
+	barbarea_v: {
+		flower: true,
+		color: "YELLOW"
+	},
+	begonia_e: {
+		flower: true,
+		color: "PINK"
+	},
+	brachystelma_s: {
+		flower: true,
+		color: "BROWN"
+	},
+	cardamine_c: {
+		flower: true,
+		color: "WHITE"
+	},
+	cephalophyllum_p: {
+		flower: true,
+		color: "RED"
+	},
+	chrysanthemum_m: {
+		flower: true,
+		color: "PINK"
+	},
+	clove: {
+		flower: false,
+		color: "RED"
+	},
+	corydalis: {
+		flower: true,
+		color: "MAGENTA"
+	},
+	corydalis_f: {
+		flower: true,
+		color: "YELLOW"
+	},
+	crassula_s: {
+		flower: true,
+		color: "LIGHT_GRAY"
+	},
+	disa_f: {
+		flower: true,
+		color: "RED"
+	},
+	epipogium_a: {
+		flower: true,
+		color: "PINK"
+	},
+	fabaceae: {
+		flower: true,
+		color: "PURPLE"
+	},
+	galanthus: {
+		flower: true,
+		color: "WHITE"
+	},
+	heliotropium_p: {
+		flower: true,
+		color: "YELLOW"
+	},
+	hellebore: {
+		flower: true,
+		color: "PURPLE"
+	},
+	hesperis_m: {
+		flower: true,
+		color: "PINK"
+	},
+	impatiens_c: {
+		flower: false,
+		color: "ORANGE"
+	},
+	isolepis_b: {
+		flower: false,
+		color: "GREEN"
+	},
+	narthecium_a: {
+		flower: true,
+		color: "YELLOW"
+	},
+	nemesia_m: {
+		flower: false,
+		color: "YELLOW"
+	},
+	peony: {
+		flower: true,
+		color: "PINK"
+	},
+	pluchea_g: {
+		flower: true,
+		color: "PINK"
+	},
+	psoralea_c: {
+		flower: true,
+		color: "PURPLE"
+	},
+	psoralea_m: {
+		flower: false,
+		color: "BLUE"
+	},
+	pueraria_m: {
+		flower: true,
+		color: "MAGENTA"
+	},
+	rhanterium_e: {
+		flower: true,
+		color: "YELLOW"
+	},
+	rorippa_s: {
+		flower: false,
+		color: "YELLOW"
+	},
+	rudbeckia_h: {
+		flower: true,
+		color: "YELLOW"
+	},
+	streblorrhiza_s: {
+		flower: false,
+		color: "GRAY"
+	},
+	sumatra_d: {
+		flower: false,
+		color: "BROWN"
+	},
+	thismia_a: {
+		flower: false,
+		color: "ORANGE"
+	},
+	trillium: {
+		flower: true,
+		color: "WHITE"
+	},
+	veratrum_v: {
+		flower: false,
+		color: "GREEN"
+	},
+	veronica_a: {
+		flower: true,
+		color: "LIGHT_BLUE"
+	},
+	viola_c: {
+		flower: true,
+		color: "PURPLE"
+	},
+	allium_drumstick: {
+		flower: true,
+		color: "PINK"
+	},
+	bachelors_button: {
+		flower: true,
+		color: "BLUE"
+	},
+	billy_buttons: {
+		flower: true,
+		color: "YELLOW"
+	},
+	delphinium_belladonna: {
+		flower: true,
+		color: "BLUE"
+	},
+	fernflower_yarrow: {
+		flower: true,
+		color: "YELLOW"
+	},
+	gerbera_daisy: {
+		flower: true,
+		color: "PINK"
+	},
+	hydrangea: {
+		flower: true,
+		color: "PURPLE"
+	},
+	red_rover: {
+		flower: true,
+		color: "RED"
+	},
+	snapdragon: {
+		flower: true,
+		color: "RED"
+	},
+	star_of_bethlehem: {
+		flower: true,
+		color: "WHITE"
+	},
+	barren_strawberry: {
+		flower: true,
+		color: "LIME"
+	},
+	beardtongue: {
+		flower: true,
+		color: "MAGENTA"
+	},
+	fairy_lily: {
+		flower: true,
+		color: "WHITE"
+	},
+	royal_bluebell: {
+		flower: true,
+		color: "PURPLE"
+	},
+	sandbog_death_camas: {
+		flower: true,
+		color: "LIGHT_GRAY"
+	},
+	snowy_river_westringia: {
+		flower: true,
+		color: "GRAY"
+	},
+	weldenia_candida: {
+		flower: true,
+		color: "WHITE"
+	},
+	wild_rice: {
+		flower: false,
+		color: "LIME"
+	},
+	yellowroot: {
+		flower: true,
+		color: "MAGENTA"
+	},
+	zenobia: {
+		flower: true,
+		color: "LIGHT_GRAY"
+	},
+	cambridge_blue: {
+		flower: true,
+		color: "CYAN"
+	}
+	;
+}

@@ -9,7 +9,7 @@
 	jankson = '1.2.1'
 	spruceui = '4.0.0+1.19'
 	clothconfig = '6.2.57'
-	enderlib = '1.0.0+0.3.0'
+	enderlib = '1.0.0+0.3.2-SNAPSHOT'
 	endconfig = '0.1.0'
 	annotations = '23.0.0'
 

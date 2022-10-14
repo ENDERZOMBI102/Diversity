@@ -1,8 +1,10 @@
 {
-	"itemGroup.diversity-flora.floraltab": "Floral Diversity",
+	"itemGroup.diversity-flora.tab": "Diversity: Flora",
 
 	"biome.diversity-flora.crystal_forest": "Crystal Forest",
-	"block.diversity-flora.crystal_ground": "Crystal Ground",
 
-	"block.diversity-flora.cataplant": "Cataplant"
+	"block.diversity-flora": {
+		"crystal_ground": "Crystal Ground",
+		"cataplant": "Cataplant"
+	}
 }

@@ -24,6 +24,7 @@ allprojects {
 	loom.runtimeOnlyLog4j.set( true )
 
 	repositories {
+		mavenLocal()
 		mavenCentral()
 		maven( "https://jitpack.io" )
 		maven( "https://maven.gegy.dev" )

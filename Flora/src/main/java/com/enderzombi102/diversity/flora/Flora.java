@@ -13,20 +13,20 @@ import org.slf4j.LoggerFactory;
 import static com.enderzombi102.diversity.flora.util.Const.getId;
 
 public class Flora implements ModInitializer {
-	public static final Logger LOGGER = LoggerFactory.getLogger("Diversity | Flora");
+	public static final Logger LOGGER = LoggerFactory.getLogger( "Diversity | Flora" );
 	public static final ItemGroup FLORAL_TAB = QuiltItemGroup.createWithIcon(
-		getId("floraltab"),
-		() -> new ItemStack( ItemRegistry.get("cataplant") )
+		getId( "tab" ),
+		() -> new ItemStack( ItemRegistry.get( "cataplant" ) )
 	);
 
 	@Override
-	public void onInitialize(ModContainer container) {
+	public void onInitialize( ModContainer container ) {
 		Config.save();
 		BlockRegistry.register();
 		BlockEntityRegistry.register();
 		ItemRegistry.register();
 		BiomeRegistry.register();
 		EventListeners.register();
-		LOGGER.info("Diversity module `Flora` loaded!");
+		LOGGER.info( "Diversity module `Flora` loaded!" );
 	}
 }

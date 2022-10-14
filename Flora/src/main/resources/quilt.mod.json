@@ -35,15 +35,7 @@
 				"id": "java",
 				"versions": ">=17"
 			}
-		],
-		"entrypoints": {
-			"init": [
-				"com.enderzombi102.diversity.flora.Flora"
-			],
-			"client_init": [
-				"com.enderzombi102.diversity.flora.FloraClient"
-			]
-		}
+		]
 	},
 	"minecraft": {
 		"environment": "*"
@@ -56,5 +48,10 @@
 			"description": "Diversity is a mod all about the nature ecosystems.",
 			"icon": "assets/diversity/icon.png"
 		}
+	},
+	"diversity": {
+		"name": "flora",
+		"main": "com.enderzombi102.diversity.flora.Flora",
+		"client": "com.enderzombi102.diversity.flora.FloraClient"
 	}
 }

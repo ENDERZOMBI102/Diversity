@@ -10,6 +10,7 @@ import java.util.Locale;
 import static com.enderzombi102.endconfig.api.ConfigOptions.*;
 import static com.enderzombi102.enderlib.collections.ListUtil.mutableListOf;
 
+@SuppressWarnings("UnstableApiUsage")
 @Sync
 public class ConfigData implements Data, ChangeListener<ConfigData> {
 	@Tooltip
