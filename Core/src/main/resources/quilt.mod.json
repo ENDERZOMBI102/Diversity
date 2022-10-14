@@ -18,34 +18,11 @@
 			"license": "MIT",
 			"icon": "assets/diversity-core/icon.png"
 		},
-		"depends": [
-			{
-				"id": "quilt_loader",
-				"versions": "${loader_version}"
-			},
-			{
-				"id": "quilt_base",
-				"versions": "*"
-			},
-			{
-				"id": "minecraft",
-				"versions": ">=${minecraft_version}"
-			},
-			{
-				"id": "java",
-				"versions": ">=17"
-			}
+		"depends": [ // ${dependencies}
 		],
 		"entrypoints": {
-			"init": [
-				"com.enderzombi102.diversity.core.Core"
-			],
-			"client_init": [
-				"com.enderzombi102.endconfig.impl.EndConfigImpl"
-			],
-			"modmenu": [
-				"com.enderzombi102.diversity.core.ModmenuCompat"
-			]
+			"init": [ "com.enderzombi102.diversity.core.Core" ],
+			"modmenu": [ "com.enderzombi102.diversity.core.ModmenuCompat" ]
 		}
 	},
 	"minecraft": {

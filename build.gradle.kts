@@ -42,6 +42,7 @@ allprojects {
 	}
 }
 
+val core = project(":Core")
 subprojects {
 	dependencies {
 		// Common dependencies
@@ -55,28 +56,32 @@ subprojects {
 		modImplementation( bundle( name, "mod.implementation" ) )
 		modCompileOnlyApi( bundle( name, "mod.compileapi" ) )
 
-		if ( name != "Core" )
+		if ( project != core )
 			compileOnly( project( ":Core", "namedElements" ) )
 	}
 
-	tasks.withType<ProcessResources>().configureEach {
+	tasks.withType<ProcessResources> {
 		inputs.property( "version"          , version )
-		inputs.property( "group"            , "com.enderzombi102.diversity" )
-		inputs.property( "loader_version"   , rootProject.libs.versions.loader.get() )
-		inputs.property( "minecraft_version", libs.versions.minecraft.get() )
+		inputs.property( "loader_version"   , version("loader") )
+		inputs.property( "minecraft_version", version("minecraft") )
+		inputs.property( "core_version", core.version )
 		filteringCharset = "UTF-8"
 
 		filesMatching( "quilt.mod.json" ) {
 			expand(
-				Pair( "version"          , version ),
-				Pair( "group"            , "com.enderzombi102.diversity" ),
-				Pair( "loader_version"   , rootProject.libs.versions.loader.get() ),
-				Pair( "minecraft_version", libs.versions.minecraft.get() ),
+				Pair( "version"     , version ),
+				Pair( "group"       , "com.enderzombi102.diversity" ),
+				Pair( "dependencies", """ this is a hack comment
+				{ "id": "quilt_loader", "versions": "${version("loader")}" },
+				{ "id": "quilt_base", "versions": "*" },
+				{ "id": "minecraft", "versions": ">=${version("minecraft")}" },
+				{ "id": "java", "versions": ">=17" }${ if ( project == core ) "" else """,
+				{ "id": "diversity-core", "versions": "${core.version}" }""".trimIndent() }""".trimIndent() )
 			)
 		}
 	}
 
-	tasks.withType<JavaCompile>().configureEach {
+	tasks.withType<JavaCompile> {
 		options.encoding = "UTF-8"
 		options.release.set( 17 )
 	}
@@ -86,14 +91,14 @@ subprojects {
 		withSourcesJar()
 	}
 
-	tasks.withType<AbstractArchiveTask>().configureEach {
+	tasks.withType<AbstractArchiveTask> {
 		archiveBaseName.set( project.name.toLowerCase() )
 		destinationDirectory.set( rootProject.buildDir / ( if ( archiveClassifier.get() in listOf( "dev", "sources" ) ) "devlibs" else "libs" ) )
 	}
 
-	tasks.withType<Jar>().configureEach {
+	tasks.withType<Jar> {
 		from( "LICENSE" ) {
-			rename { "${it}_${project.ext["archivesBaseName"]}" }
+			rename { "${it}_$archiveBaseName}" }
 		}
 	}
 
@@ -109,9 +114,8 @@ subprojects {
 loom.runConfigs["client"].isIdeConfigGenerated = true
 loom.runConfigs["server"].isIdeConfigGenerated = true
 
-tasks.withType<ProcessResources>().configureEach {
+tasks.withType<ProcessResources> {
 	inputs.property( "version", version )
-	inputs.property( "group", "com.enderzombi102" )
 	filteringCharset = "UTF-8"
 
 	filesMatching("quilt.mod.json") {

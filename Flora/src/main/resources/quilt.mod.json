@@ -18,27 +18,8 @@
 			"license": "MIT",
 			"icon": "assets/diversity-flora/flora.png"
 		},
-		"depends": [
-			{
-				"id": "quilt_loader",
-				"versions": "${loader_version}"
-			},
-			{
-				"id": "quilt_base",
-				"versions": "*"
-			},
-			{
-				"id": "minecraft",
-				"versions": ">=${minecraft_version}"
-			},
-			{
-				"id": "java",
-				"versions": ">=17"
-			}
+		"depends": [ //${dependencies}
 		]
-	},
-	"minecraft": {
-		"environment": "*"
 	},
 	"mixin": "diversity-flora.mixins.json",
 	"modmenu": {
@@ -48,10 +29,5 @@
 			"description": "Diversity is a mod all about the nature ecosystems.",
 			"icon": "assets/diversity/icon.png"
 		}
-	},
-	"diversity": {
-		"name": "flora",
-		"main": "com.enderzombi102.diversity.flora.Flora",
-		"client": "com.enderzombi102.diversity.flora.FloraClient"
 	}
 }
