@@ -9,10 +9,7 @@ import org.quiltmc.qsl.base.api.entrypoint.ModInitializer
 import org.slf4j.LoggerFactory
 
 class Core : ModInitializer {
-	init {
-		DiversityModules.construct()
-
-	}
+	init { DiversityModules.construct() }
 
 	override fun onInitialize( mod: ModContainer ) {
 		EndConfig.register( MODID, ConfigData::class.java )

@@ -4,6 +4,7 @@ import com.enderzombi102.diversity.core.Core
 import com.enderzombi102.enderlib.collections.ListUtil.append
 import com.enderzombi102.enderlib.io.FileUtils.toPath
 import org.quiltmc.loader.api.ModContainer
+import org.quiltmc.loader.api.ModMetadata
 import org.quiltmc.loader.api.QuiltLoader
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer
@@ -45,9 +46,9 @@ object DiversityModules {
 	fun construct() {
 		val objects = QuiltLoader.getAllMods()
 			.stream()
+			.filter { it.metadata().let { meta -> "diversity" in meta || meta.group().startsWith("com.enderzombi102.diversity") } }
 			.map { Pair( it, it.metadata() ) }
-			.filter { it.second.containsValue( "diversity" ) }
-			.map { Pair( it.first, it.second.value("diversity")!!.asObject() ) }
+			.map { Pair( it.first, it.second.value("diversity")?.asObject() ?: emptyMap() ) }
 			.toList()
 
 		for (entry in objects) {
@@ -64,17 +65,7 @@ object DiversityModules {
 
 			MODULES[name] = ModuleData(
 				name,
-				buildList {
-					val sources = toPath(clazz.protectionDomain.codeSource.location)
-					append(
-						this,
-						sources,
-						entry.first.getPath("assets").parent
-					)
-					val kotlin = sources.parent.parent.resolve("kotlin/main")
-					if ( kotlin.toFile().exists() )
-						add( kotlin )
-				},
+				findPaths( clazz, entry.first ),
 				entry.first,
 				Initializer( clazz, clazz.constructors[0].newInstance() as ModInitializer ),
 				if ( clientClazz != null )
@@ -84,29 +75,27 @@ object DiversityModules {
 			)
 		}
 
-		val meta = QuiltLoader.getModContainer("diversity-core").orElseThrow()
-		MODULES["core"] = ModuleData(
-			"core",
-			buildList {
-				val sources = toPath( Core::class.java.protectionDomain.codeSource.location )
-				append(
-					this,
-					sources,
-					meta.getPath("assets").parent
-				)
-				val kotlin = sources.parent.parent.resolve("kotlin/main")
-				if ( kotlin.toFile().exists() )
-					add( kotlin )
-			},
-			meta,
-			null,
-			null
+		val container = QuiltLoader.getModContainer("diversity-core").orElseThrow()
+		MODULES["core"] = ModuleData( "core", findPaths( Core::class.java, container ), container, null, null )
+	}
+
+	private fun findPaths( clazz: Class<*>, container: ModContainer ) = buildList {
+		val sources = toPath( clazz.protectionDomain.codeSource.location )
+		append(
+			this,
+			sources,
+			container.getPath("assets").parent
 		)
+		val kotlin = sources.parent.parent.resolve("kotlin/main")
+		if ( kotlin.toFile().exists() )
+			add( kotlin )
 	}
 
 	@JvmStatic
 	fun modules() = this.MODULES.values as Collection<ModuleData>
 }
+
+private operator fun ModMetadata.contains( value: String ) = this.containsValue( value )
 
 /**
  * Represents a diversity module's data.
