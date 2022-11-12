@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+@SuppressWarnings("deprecation")
 public abstract class PlantBlock extends net.minecraft.block.PlantBlock {
 
 	public PlantBlock() {

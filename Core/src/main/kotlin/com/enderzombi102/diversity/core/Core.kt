@@ -55,6 +55,7 @@ class Core : ModInitializer {
 		}
 
 		@JvmStatic
+		@Suppress("UNUSED_PARAMETER")
 		fun onConfigChanged( config: ConfigHolder<ConfigData> ) {
 			println("Config changed!")
 		}
