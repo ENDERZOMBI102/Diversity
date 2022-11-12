@@ -1,6 +1,6 @@
 @file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
 plugins {
-	id("org.quiltmc.loom") version "0.12.+"
+	id("org.quiltmc.loom") version "1.0.+"
 	java
 }
 
@@ -17,7 +17,6 @@ operator fun File.div(path: String ) = this.resolve( path )
 
 allprojects {
 	apply( plugin="org.quiltmc.loom" )
-	loom.shareRemapCaches.set( true )
 	loom.runtimeOnlyLog4j.set( true )
 
 	repositories {
