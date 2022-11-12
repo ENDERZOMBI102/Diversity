@@ -5,6 +5,7 @@ import com.enderzombi102.diversity.core.module.DiversityModules
 import com.enderzombi102.diversity.core.registry.Registries
 import com.enderzombi102.endconfig.api.ConfigHolder
 import com.enderzombi102.endconfig.api.EndConfig
+import org.jetbrains.annotations.ApiStatus.Internal
 import org.quiltmc.loader.api.ModContainer
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer
 import org.slf4j.LoggerFactory
@@ -31,6 +32,7 @@ class Core : ModInitializer {
 	}
 
 	companion object {
+		@Internal
 		var currentId: String? = null
 
 		@JvmStatic

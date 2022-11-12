@@ -6,6 +6,7 @@ import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
+import org.jetbrains.annotations.ApiStatus.Internal
 
 object Registries {
 	@JvmField
@@ -27,6 +28,7 @@ class DRegistry<T>( private val reg: Registry<T>, private val type: String ) {
 
 	fun register( name: String, obj: T ) = obj.apply { map[Identifier( Core.currentId, name )] = obj }
 
+	@Internal
 	fun registerInternal() {
 		LOGGER.info( "Registering ${type}s" )
 		for ( (id, obj) in map )

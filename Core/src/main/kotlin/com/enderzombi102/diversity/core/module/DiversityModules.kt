@@ -15,6 +15,7 @@ import kotlin.io.path.exists
 
 @Suppress("UNCHECKED_CAST")
 object DiversityModules {
+	@JvmStatic
 	private val MODULES: MutableMap<String, ModuleData> = HashMap()
 
 	@JvmStatic
@@ -79,6 +80,9 @@ object DiversityModules {
 		MODULES["core"] = ModuleData( "core", findPaths( Core::class.java, container ), container, null, null )
 	}
 
+	@JvmStatic
+	fun modules() = this.MODULES.values as Collection<ModuleData>
+
 	private fun findPaths( clazz: Class<*>, container: ModContainer ) = buildList {
 		val sources = toPath( clazz.protectionDomain.codeSource.location )
 		append( this, sources, container.getPath("assets").parent )
@@ -86,9 +90,6 @@ object DiversityModules {
 		if ( kotlin.toFile().exists() )
 			add( kotlin )
 	}
-
-	@JvmStatic
-	fun modules() = this.MODULES.values as Collection<ModuleData>
 }
 
 private operator fun ModMetadata.contains( value: String ) = this.containsValue( value )
@@ -128,4 +129,4 @@ data class ModuleData(
 	fun streamRoots() = this.roots.stream()
 }
 
-data class Initializer<T>(val clazz: Class<out T>, var instance: T )
+data class Initializer<T>( val clazz: Class<out T>, var instance: T )
