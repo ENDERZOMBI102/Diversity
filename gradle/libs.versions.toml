@@ -1,10 +1,10 @@
 [versions]
 	# Loader dependencies
 	minecraft = '1.19.2'
-	mappings = '3'
+	mappings = '21'
 	loader = '0.17.1'
 	qfapi = '4.0.0-beta.7+0.59.0-1.19.2'
-	# Diversity dependnecies
+	# Diversity dependecies
 	modmenu = '4.0.6'
 	jankson = '1.2.1'
 	spruceui = '4.0.0+1.19'

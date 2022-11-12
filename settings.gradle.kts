@@ -11,6 +11,6 @@ pluginManagement {
 	}
 }
 rootProject.name = "Diversity"
+
 include( "Flora" )
 include( "Core" )
-

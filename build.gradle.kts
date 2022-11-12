@@ -1,20 +1,17 @@
 @file:Suppress("SpellCheckingInspection", "UnstableApiUsage")
-import net.fabricmc.loom.api.mappings.layered.spec.LayeredMappingSpecBuilder
-
 plugins {
 	id("org.quiltmc.loom") version "0.12.+"
 	java
 }
+
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 /** Utility function that retrieves a bundle from the version catalog. */
 fun bundle( proj: String, bundleName: String ) =
 	libs.findBundle( "${proj.toLowerCase()}.$bundleName" ).get()
 
 /** Utility function that retrieves a version from the version catalog. */
-fun version( name: String ) = libs.findVersion( name ).get().displayName
-
-fun LayeredMappingSpecBuilder.quilt( minecraft: String, mappings: String ) =
-	addLayer( quiltMappings.mappings( "org.quiltmc:quilt-mappings:$minecraft+build.$mappings:v2" ) )
+fun version( key: String ) = libs.findVersion(key).get().requiredVersion
 
 operator fun File.div(path: String ) = this.resolve( path )
 
@@ -38,7 +35,7 @@ allprojects {
 
 	dependencies {
 		minecraft( "com.mojang:minecraft:${version("minecraft")}" )
-		mappings( loom.layered { quilt( version("minecraft"), version("mappings") ) } )
+		mappings( "org.quiltmc:quilt-mappings:${version("minecraft")}+build.${version("mappings")}:v2" )
 
 		implementation( bundle( "common", "implementation" ) )
 		modImplementation( bundle( "common", "mod.compileapi" ) )
