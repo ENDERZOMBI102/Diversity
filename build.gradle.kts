@@ -33,7 +33,7 @@ allprojects {
 
 	dependencies {
 		minecraft( "com.mojang:minecraft:${version("minecraft")}" )
-		mappings( "org.quiltmc:quilt-mappings:${version("minecraft")}+build.${version("mappings")}:v2" )
+		mappings( "org.quiltmc:quilt-mappings:${version("minecraft")}+build.${version("mappings")}:intermediary-v2" )
 
 		implementation( bundle( "common", "implementation" ) )
 		modImplementation( bundle( "common", "mod.compileapi" ) )
