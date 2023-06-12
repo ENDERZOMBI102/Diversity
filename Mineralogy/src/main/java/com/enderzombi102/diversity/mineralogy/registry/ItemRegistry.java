@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 import static com.enderzombi102.diversity.core.registry.Registries.ITEMS;
-import static com.enderzombi102.diversity.flora.Flora.FLORAL_TAB;
 
 public final class ItemRegistry {
 	private static final Item CATAPLANT = ITEMS.register( "cataplant", blockItem( "cataplant", settings() ) );
@@ -23,7 +22,7 @@ public final class ItemRegistry {
 	}
 
 	private static QuiltItemSettings settings() {
-		return new QuiltItemSettings().group( FLORAL_TAB );
+		return new QuiltItemSettings();
 	}
 
 	private static @NotNull Item blockItem( @NotNull String id, @NotNull Settings settings ) {

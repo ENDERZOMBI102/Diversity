@@ -4,16 +4,20 @@ plugins {
 	java
 }
 
-val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-
 /** Utility function that retrieves a bundle from the version catalog. */
-fun bundle( proj: String, bundleName: String ) =
-	libs.findBundle( "${proj.toLowerCase()}.$bundleName" ).get()
+fun Project.bundle( bundleName: String, namespace: String = name.toLowerCase() ): Provider<ExternalModuleDependencyBundle> =
+	rootProject.extensions.getByType<VersionCatalogsExtension>()
+		.named("libs")
+		.findBundle( "$namespace.$bundleName" )
+		.get()
 
 /** Utility function that retrieves a version from the version catalog. */
-fun version( key: String ) = libs.findVersion(key).get().requiredVersion
-
-operator fun File.div(path: String ) = this.resolve( path )
+fun version( key: String ): String =
+	rootProject.extensions.getByType<VersionCatalogsExtension>()
+		.named( "libs" )
+		.findVersion( key )
+		.get()
+		.requiredVersion
 
 allprojects {
 	apply( plugin="org.quiltmc.loom" )
@@ -24,20 +28,23 @@ allprojects {
 		maven( "https://jitpack.io" )
 		maven( "https://maven.gegy.dev" )
 		maven( "https://maven.shedaniel.me" )
+		maven( "https://maven.wispforest.io" )
 		maven( "https://maven.ryanliptak.com" )
+		maven( "https://maven.draylar.dev/releases" )
 		maven( "https://repsy.io/mvn/enderzombi102/mc" )
 		maven( "https://maven.terraformersmc.com/releases" )
 		maven( "https://maven.quiltmc.org/repository/release" )
 		maven( "https://maven.quiltmc.org/repository/snapshot" )
+		maven( "https://server.bbkr.space/artifactory/libs-release" )
 	}
 
 	dependencies {
 		minecraft( "com.mojang:minecraft:${version("minecraft")}" )
 		mappings( "org.quiltmc:quilt-mappings:${version("minecraft")}+build.${version("mappings")}:intermediary-v2" )
 
-		implementation( bundle( "common", "implementation" ) )
-		modImplementation( bundle( "common", "mod.compileapi" ) )
-		modImplementation( bundle( "common", "mod.implementation" ) )
+		implementation( bundle( "implementation", "common" ) )
+		modImplementation( bundle( "mod.compileapi", "common" ) )
+		modImplementation( bundle( "mod.implementation", "common" ) )
 	}
 }
 
@@ -45,15 +52,16 @@ val core = project(":Core")
 subprojects {
 	dependencies {
 		// Common dependencies
-		implementation( bundle( "common", "implementation" ) )
-		modCompileOnlyApi( bundle( "common", "mod.compileapi" ) )
-		modImplementation( bundle( "common", "mod.implementation" ) )
+		implementation( bundle( "implementation", "common" ) )
+		modCompileOnlyApi( bundle( "mod.compileapi", "common" ) )
+		modImplementation( bundle( "mod.implementation", "common" ) )
 
 		// Module-specific dependencies
-		include( bundle( name, "include" ) )
-		implementation( bundle( name, "implementation" ) )
-		modImplementation( bundle( name, "mod.implementation" ) )
-		modCompileOnlyApi( bundle( name, "mod.compileapi" ) )
+		include( bundle( "include" ) )
+		implementation( bundle( "implementation" ) )
+		annotationProcessor( bundle( "annotation" ) )
+		modImplementation( bundle( "mod.implementation" ) )
+		modCompileOnlyApi( bundle( "mod.compileapi" ) )
 
 		if ( project != core )
 			compileOnly( project( ":Core", "namedElements" ) )
@@ -63,19 +71,23 @@ subprojects {
 		inputs.property( "version"          , version )
 		inputs.property( "loader_version"   , version("loader") )
 		inputs.property( "minecraft_version", version("minecraft") )
-		inputs.property( "core_version", core.version )
+		inputs.property( "core_version"     , core.version )
 		filteringCharset = "UTF-8"
+
+		var deps = """
+		{ "id": "quilt_loader", "versions": "${version("loader")}" },
+		{ "id": "quilt_base", "versions": "*" },
+		{ "id": "minecraft", "versions": ">=${version("minecraft")}" },
+		{ "id": "java", "versions": ">=17" }
+		""".trimIndent()
+		if ( project != core )
+			deps += ",\n{ \"id\": \"diversity-core\", \"versions\": \"${core.version}\" }"
 
 		filesMatching( "quilt.mod.json" ) {
 			expand(
 				"version"      to version,
 				"group"        to "com.enderzombi102.diversity",
-				"dependencies" to """
-				{ "id": "quilt_loader", "versions": "${version("loader")}" },
-				{ "id": "quilt_base", "versions": "*" },
-				{ "id": "minecraft", "versions": ">=${version("minecraft")}" },
-				{ "id": "java", "versions": ">=17" }${ if ( project == core ) "" else """,
-				{ "id": "diversity-core", "versions": "${core.version}" }""".trimIndent() }""".trimIndent()
+				"dependencies" to deps
 			)
 			filter { it.substringBefore("///") }
 		}
@@ -90,7 +102,7 @@ subprojects {
 
 	tasks.withType<AbstractArchiveTask> {
 		archiveBaseName.set( project.name.toLowerCase() )
-		destinationDirectory.set( rootProject.buildDir / ( if ( archiveClassifier.get() in listOf( "dev", "sources" ) ) "devlibs" else "libs" ) )
+		destinationDirectory.set( rootProject.buildDir.resolve( if ( archiveClassifier.get() in listOf( "dev", "sources" ) ) "devlibs" else "libs" ) )
 	}
 
 	tasks.withType<Jar> {
@@ -102,9 +114,9 @@ subprojects {
 	rootProject.dependencies {
 		include( implementation( project( path=path, configuration="namedElements" ) )!! )
 		// add this module's dependencies to the runtime classpath
-		implementation( bundle( name, "implementation" ) )
-		modImplementation( bundle( name, "mod.implementation" ) )
-		modImplementation( bundle( name, "mod.compileapi" ) )
+		implementation( bundle( "implementation" ) )
+		modImplementation( bundle( "mod.implementation" ) )
+		modImplementation( bundle( "mod.compileapi" ) )
 	}
 }
 

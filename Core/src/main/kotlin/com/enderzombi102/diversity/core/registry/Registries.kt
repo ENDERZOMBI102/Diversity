@@ -4,36 +4,55 @@ import com.enderzombi102.diversity.core.Core
 import com.enderzombi102.diversity.core.Core.Companion.LOGGER
 import net.minecraft.block.Block
 import net.minecraft.item.Item
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
 import net.minecraft.util.Identifier
-import net.minecraft.util.registry.Registry
 import org.jetbrains.annotations.ApiStatus.Internal
+import org.quiltmc.qsl.item.setting.api.CustomItemSetting
+import org.quiltmc.qsl.item.setting.api.QuiltItemSettings
 
 object Registries {
 	@JvmField
-	val BLOCKS = registry<Block>( Registry.BLOCK )
+	val BLOCKS = registry<Block>( Registries.BLOCK )
 	@JvmField
-	val ITEMS = registry<Item>( Registry.ITEM )
+	val ITEMS = registry<Item>( Registries.ITEM )
 
 	fun register() {
 		BLOCKS.registerInternal()
 		ITEMS.registerInternal()
-	}
-}
 
-private inline fun <reified T> registry( reg: Registry<T> ) =
-	DRegistry( reg, T::class.java.simpleName.lowercase() )
-
-class DRegistry<T>( private val reg: Registry<T>, private val type: String ) {
-	private val map: MutableMap<Identifier, T> = HashMap()
-
-	fun register( name: String, obj: T ) = obj.apply { map[Identifier( Core.currentId, name )] = obj }
-
-	@Internal
-	fun registerInternal() {
-		LOGGER.info( "Registering ${type}s" )
-		for ( (id, obj) in map )
-			Registry.register( reg, id, obj )
+		ITEMS.contents.asSequence()
+			.map { (key, item) -> key to item }
 	}
 
-	fun getOrDefault( id: Identifier, default: T ): T = map.getOrDefault( id, default )
+	private inline fun <reified T> registry( reg: Registry<T> ) =
+		DiversityRegistry( reg, T::class.java.simpleName.lowercase() )
+
+	object ItemUtil {
+		internal val GROUP: CustomItemSetting<String> = CustomItemSetting.create { null }
+
+		fun QuiltItemSettings.group( name: String ): QuiltItemSettings {
+			this.customSetting( GROUP, name )
+			return this
+		}
+	}
+
+	class DiversityRegistry<T>( private val reg: Registry<T>, private val type: String ) {
+		internal val contents: MutableMap<Identifier, T> = HashMap()
+
+		fun register( name: String, obj: T ): T {
+			contents[ Identifier( Core.currentId, name ) ] = obj
+			return obj
+		}
+
+		@Internal
+		internal fun registerInternal() {
+			LOGGER.info( "Registering ${type}s" )
+			for ( ( id, obj ) in contents )
+				Registry.register( reg, id, obj )
+		}
+
+		fun getOrDefault( id: Identifier, default: T ): T =
+			contents.getOrDefault( id, default )
+	}
 }

@@ -2,12 +2,12 @@
 	"schema_version": 1,
 	"quilt_loader": {
 		"group": "${group}",
-		"id": "diversity-flora",
+		"id": "diversity-mineralogy",
 		"version": "${version}",
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"metadata": {
-			"name": "Diversity: Flora",
-			"description": "Diversity module that adds more flora to your world",
+			"name": "Diversity: Mineralogy",
+			"description": "Diversity module that adds a more diverse underground system and stones",
 			"contributors": {
 				"ENDERZOMBI102": "Owner"
 			},
@@ -16,19 +16,12 @@
 				"issues": "https://github.com/ENDERZOMBI102/Diversity/issues"
 			},
 			"license": "MIT",
-			"icon": "assets/diversity-flora/flora.png"
+			"icon": "assets/diversity-mineralogy/mineralogy.png"
 		},
 		"depends": [ /// ${dependencies}
 		]
 	},
-	"mixin": "diversity-flora.mixins.json",
-	"diversity": {
-		"main": "com.enderzombi102.diversity.flora.Flora",
-		"client": "com.enderzombi102.diversity.flora.FloraClient",
-		"groups": {
-			"floral": "cataplant"
-		}
-	},
+	"mixin": "diversity-mineralogy.mixins.json",
 	"modmenu": {
 		"parent": {
 			"id": "diversity",

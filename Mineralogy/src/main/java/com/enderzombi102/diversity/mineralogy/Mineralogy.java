@@ -7,8 +7,8 @@ import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Flora implements ModInitializer {
-	public static final Logger LOGGER = LoggerFactory.getLogger( "Diversity | Flora" );
+public class Mineralogy implements ModInitializer {
+	public static final Logger LOGGER = LoggerFactory.getLogger( "Diversity | Mineralogy" );
 
 	@Override
 	public void onInitialize( ModContainer container ) {

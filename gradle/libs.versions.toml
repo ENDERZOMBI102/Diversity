@@ -1,16 +1,15 @@
 [versions]
 	# Loader dependencies
-	minecraft = '1.19.2'
-	mappings = '21'
-	loader = '0.17.1'
-	qfapi = '4.0.0-beta.7+0.59.0-1.19.2'
+	minecraft = '1.19.4'
+	mappings = '10'
+	loader = '0.19.0-beta.18'
+	qfapi = '6.0.0-beta.9+0.83.0-1.19.4'
 	# Diversity dependecies
-	modmenu = '4.0.6'
-	jankson = '1.2.1'
-	spruceui = '4.0.0+1.19'
-	clothconfig = '6.2.57'
+	owolib = '0.10.6+1.19.4'
+	modmenu = '6.2.3'
+	jankson = '5.0.1+j1.2.2'
+	spruceui = '4.2.0+1.19.4'
 	enderlib = '1.0.0+0.3.2-SNAPSHOT'
-	endconfig = '0.1.0'
 	annotations = '23.0.0'
 
 
@@ -22,28 +21,37 @@
 	qfapi = { module = 'org.quiltmc.quilted-fabric-api:quilted-fabric-api', version.ref = 'qfapi' }
 
 	# All the various libraries
-	jankson = { module = 'blue.endless:jankson', version.ref = 'jankson' }
+	jankson = { module = 'io.github.cottonmc:Jankson-Fabric', version.ref = 'jankson' }
 	modmenu = { module = 'com.terraformersmc:modmenu', version.ref = 'modmenu' }
 	spruceui = { module = 'dev.lambdaurora:spruceui', version.ref = 'spruceui' }
-	endconfig = { module = 'com.enderzombi102:endconfig', version.ref = 'endconfig' }
+	owolib = { module = 'io.wispforest:owo-lib', version.ref = 'owolib' }
 	annotations = { module = 'org.jetbrains:annotations', version.ref = 'annotations' }
 	enderlib = { module = 'com.enderzombi102.EnderLib:minecraft', version.ref = 'enderlib' }
-	clothconfig = { module = 'me.shedaniel.cloth:cloth-config-fabric', version.ref = 'clothconfig' }
 
 [bundles]
 	# Dependencies common to all projects
 	common_implementation = [ 'annotations' ]
-	common_mod_implementation = [ 'loader', 'qfapi', 'enderlib','endconfig' ]
+	common_annotation = [ 'owolib' ]
+	common_mod_implementation = [ 'loader', 'qfapi', 'enderlib', 'owolib' ]
 	common_mod_compileapi = [ 'modmenu' ]
 
 	# :Core dependencies
 	core_implementation = [ 'jankson' ]
-	core_include = [ 'jankson', 'endconfig' ]
+	core_annotation = [ ]
+	core_include = [ ]
 	core_mod_compileapi = [ ]
 	core_mod_implementation = [ ]
 
 	# :Flora dependencies
 	flora_implementation = [ ]
+	flora_annotation = [ ]
 	flora_include = [ ]
 	flora_mod_compileapi = [ ]
 	flora_mod_implementation = [ ]
+
+	# :Mineralogy dependencies
+	mineralogy_implementation = [ ]
+	mineralogy_annotation = [ ]
+	mineralogy_include = [ ]
+	mineralogy_mod_compileapi = [ ]
+	mineralogy_mod_implementation = [ ]

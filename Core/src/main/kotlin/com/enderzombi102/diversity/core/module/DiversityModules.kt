@@ -19,9 +19,9 @@ object DiversityModules {
 	private val MODULES: MutableMap<String, ModuleData> = HashMap()
 
 	@JvmStatic
-	fun getModule(name: String): ModuleData {
-		require(MODULES.containsKey(name)) { "No module called `$name` is installed! why has it been requested?" }
-		return MODULES[name]!!
+	fun getModule( name: String ): ModuleData {
+		require( MODULES.containsKey( name ) ) { "No module called `$name` is installed! why has it been requested?" }
+		return MODULES[ name ]!!
 	}
 
 	/**
@@ -30,49 +30,42 @@ object DiversityModules {
 	 * @return the path to the file.
 	 * @throws FileNotFoundException if not found.
 	 */
-	@Throws(FileNotFoundException::class)
+	@Throws( FileNotFoundException::class )
 	@JvmStatic
-	fun find(file: String): Path = MODULES.values
+	fun find( file: String ): Path = MODULES.values
 		.stream()
-		.flatMap(ModuleData::streamRoots)
-		.map { it.resolve(file) }
-		.filter(Path::exists)
+		.flatMap( ModuleData::streamRoots )
+		.map { it.resolve( file ) }
+		.filter( Path::exists )
 		.findFirst()
-		.orElseThrow { FileNotFoundException("File `$file` not found in any root of any diversity module!") }
+		.orElseThrow { FileNotFoundException( "File `$file` not found in any root of any diversity module!" ) }
 
 
 	@JvmStatic
 	fun construct() {
 		val objects = QuiltLoader.getAllMods()
 			.stream()
-			.filter { it.metadata().let { meta -> "diversity" in meta || meta.group().startsWith("com.enderzombi102.diversity") } }
+			.filter { it.metadata().let { meta -> "diversity" in meta || meta.group().startsWith( "com.enderzombi102.diversity" ) } }
 			.map { it to it.metadata() }
-			.map { it.first to ( it.second.value("diversity")?.asObject() ?: emptyMap() ) }
+			.map { (container, meta) -> container to ( meta.value( "diversity" )?.asObject() ?: emptyMap() ) }
 			.toList()
 
-		for (entry in objects) {
-			val name = entry.second["name"]?.asString() ?: entry.first.metadata().id().substringAfter("-")
+		for ( entry in objects ) {
+			val name = entry.second[ "name" ]?.asString() ?: entry.first.metadata().id().substringAfter( "-" )
 			if ( name == "core" )
 				continue
-			val main = entry.second["main"]?.asString() ?: "com.enderzombi102.diversity.$name.${ name.replaceFirstChar { it.uppercase() } }"
-			val client = entry.second["client"]?.asString() ?: "${main}Client"
+			val main = entry.second["main"]?.asString() ?: throw IllegalStateException( "Diversity module $name provides no main entrypoint!" )
+			val client = entry.second["client"]?.asString() ?: throw IllegalStateException( "Diversity module $name provides no client entrypoint!" )
 
-			val clazz = Class.forName( main ) as Class<out ModInitializer?>
-			val clientClazz = try {
-					Class.forName( client, true, clazz.classLoader )
-				} catch ( e: ClassNotFoundException ) {
-					null
-				} as Class<out ClientModInitializer>?
+			val clazz = Class.forName( main ) as Class<out ModInitializer>
+			val clientClazz = Class.forName( client, true, clazz.classLoader ) as Class<out ClientModInitializer>
 
 			MODULES[name] = ModuleData(
 				name,
 				findPaths( clazz, entry.first ),
 				entry.first,
 				Initializer( clazz, clazz.constructors[0].newInstance() as ModInitializer ),
-				if ( clientClazz != null )
-					Initializer( clientClazz, clientClazz.constructors[0].newInstance() as ClientModInitializer )
-				else
-					null
+				Initializer( clientClazz, clientClazz.constructors[0].newInstance() as ClientModInitializer )
 			)
 		}
 
@@ -81,7 +74,8 @@ object DiversityModules {
 	}
 
 	@JvmStatic
-	fun modules() = this.MODULES.values as Collection<ModuleData>
+	fun modules(): Collection<ModuleData> =
+		this.MODULES.values
 
 	private fun findPaths( clazz: Class<*>, container: ModContainer ) = buildList {
 		val sources = toPath( clazz.protectionDomain.codeSource.location )
@@ -92,7 +86,8 @@ object DiversityModules {
 	}
 }
 
-private operator fun ModMetadata.contains( value: String ) = this.containsValue( value )
+private operator fun ModMetadata.contains( value: String ): Boolean =
+	this.containsValue( value )
 
 /**
  * Represents a diversity module's data.

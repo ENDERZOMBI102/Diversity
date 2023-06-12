@@ -29,7 +29,7 @@ public class CataplantBlock extends PlantBlock {
 	public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
 	public CataplantBlock() {
-		super( settings -> settings.offsetType( OffsetType.XZ ) );
+		super( settings -> settings.method_49229( OffsetType.XZ ) );
 		setDefaultState( stateManager.getDefaultState().with(Properties.HORIZONTAL_FACING, Direction.NORTH) );
 	}
 
